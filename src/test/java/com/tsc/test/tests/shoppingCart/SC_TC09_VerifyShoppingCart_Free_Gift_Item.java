@@ -38,7 +38,7 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
         reporter.reportLog("Verification of Global Header on Page");
         getglobalheaderPageThreadLocal().verifyHeaderItemsOnPage();
 
-        JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/CreditCard.json");
+        JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/TokenizedCreditCard.json");
 
         List<Configuration> configurations = new ConfigurationAPI().getContentFulConfigurationForFreeItem(apiEndPoint,authorization);
         if(configurations==null)

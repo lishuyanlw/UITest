@@ -17,7 +17,7 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 	 */
 	@Test(groups={"Regression","ShoppingCart"})
 	public void SC_TC03_VerifyShoppingCart_MergingCart() throws IOException {
-		getGlobalFooterPageThreadLocal().closePopupDialog();
+//		getGlobalFooterPageThreadLocal().closePopupDialog();
 
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
@@ -29,13 +29,15 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 		getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
 		(new CartAPI()).deletePromoCodeAppliedOnCart(String.valueOf(customerEDP),accessToken);
 
-		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
+//		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
+		List<String> lstKeywordList=TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 
 		List<Map<String, String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
 
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
+		outputDataCriteria.put("videoCount", "-1");
 		outputDataCriteria.put("style", "2");
 		outputDataCriteria.put("size", "2");
 		outputDataCriteria.put("quantity", "2");

@@ -617,4 +617,21 @@ public class AccountAPI extends ApiClient {
         requestParams.put("Answer",Answer);
         return postApiCallResponseAfterAuthenticationFromJSON(requestParams,apiEndPoint,accessToken);
     }
+
+    /**
+     * To remove all credit cards
+     * @param customerEDP
+     * @param access_token
+     */
+    public void removeAllCreditCard(String customerEDP, String access_token){
+        Response response=getAccountDetailsFromCustomerEDP(customerEDP, access_token);
+        AccountResponse accountResponse= JsonParser.getResponseObject(response.asString(), new TypeReference<AccountResponse>() {});
+        if(!accountResponse.getCreditCards().isEmpty()){
+            List<AccountResponse.CreditCardsClass> creditCardList=accountResponse.getCreditCards();
+            for(AccountResponse.CreditCardsClass creditCard:creditCardList){
+                int creditCardId=creditCard.getId();
+                deleteCreditCardFromUser(creditCardId,customerEDP,access_token);
+            }
+        }
+    }
 }
