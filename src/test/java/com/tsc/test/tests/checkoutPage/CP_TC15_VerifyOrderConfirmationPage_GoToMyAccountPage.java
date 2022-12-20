@@ -42,13 +42,12 @@ public class CP_TC15_VerifyOrderConfirmationPage_GoToMyAccountPage extends BaseT
 		cartAPI.deleteAllGiftCardForUser(String.valueOf(customerEDP),accessToken);
 
 		//Setting up initial test environment by deleting all cards associated with user and cart and adding TSC Card
-//		Response response = cartAPI.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP),accessToken);
-//		CartResponse cartResponse= JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
-//		getRegularCheckoutThreadLocal().deleteCreditCardForUserAndFromCart(cartResponse,String.valueOf(customerEDP),accessToken);
+		Response response = cartAPI.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP),accessToken);
+		CartResponse cartResponse= JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
+		getRegularCheckoutThreadLocal().deleteCreditCardForUserAndFromCart(cartResponse,String.valueOf(customerEDP),accessToken);
 
-		AccountAPI accountAPI = new AccountAPI();
-		accountAPI.removeAllCreditCard(String.valueOf(customerEDP), accessToken);
 		//Adding Visa Credit Card for user
+		AccountAPI accountAPI = new AccountAPI();
 		JSONObject cardData=(JSONObject) creditCardData.get("visa");
 		Response tscCardResponse=null;
 		for(int i=0;i<5;i++){

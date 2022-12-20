@@ -25,6 +25,7 @@ import org.openqa.selenium.interactions.touch.TouchActions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import extentreport.ExtentTestManager;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.Reporter;
 import utils.ReusableActions;
@@ -1325,6 +1326,17 @@ import utils.ReusableActions;
 			dest=m.replaceAll("");
 		}
 		return dest;
+	}
+
+	/**
+	 * To wait For Element Staleness
+	 * @param - WebElement - element
+	 * @param - long - timeOutInSecond
+	 * @return - false
+	 */
+	public boolean waitForElementStaleness(WebElement element,long timeOutInSecond){
+		WebDriverWait wait = new WebDriverWait(this.getDriver(), timeOutInSecond);
+		return wait.until(ExpectedConditions.stalenessOf(element));
 	}
 
 }

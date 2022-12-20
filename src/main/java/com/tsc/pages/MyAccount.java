@@ -4984,15 +4984,23 @@ public class MyAccount extends BasePage {
 
 	/**
 	 * This function verifies My Account Order Details Page Title
-	 *
-	 * @param userName
-	 * @param customerNumber
+	 * @param - String - userName
+	 * @param - String - customerNumber
 	 */
 	public void verifyMyAccountOrderDetailPageTitle(String userName, String customerNumber) {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsHeaderUserName);
 		String orderDetailTitleUserName = this.lblOrderDetailsHeaderUserName.getText().trim();
 		String orderDetailTitleCustomerNumber = this.lblOrderDetailsHeaderCustomerNumber.getText().trim();
 		String pageTitle = this.convertToASCII(orderDetailTitleUserName);
+		if(!pageTitle.toLowerCase().contains(userName.toLowerCase())){
+			this.refresh();
+			this.waitForPageToLoad();
+			this.waitForCondition(Driver->{return this.lblOrderDetailsHeaderUserName.isDisplayed();},120000);
+		}
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsHeaderUserName);
+		orderDetailTitleUserName = this.lblOrderDetailsHeaderUserName.getText().trim();
+		orderDetailTitleCustomerNumber = this.lblOrderDetailsHeaderCustomerNumber.getText().trim();
+		pageTitle = this.convertToASCII(orderDetailTitleUserName);
 		String expectedTitle = userName.toUpperCase() + "’S ACCOUNT";
 		if (pageTitle.equalsIgnoreCase(expectedTitle))
 			reporter.reportLogPass("User Name appears in title as expected");
@@ -5422,7 +5430,7 @@ public class MyAccount extends BasePage {
 	 * @return - PlaceOrderResponse
 	 */
 	public PlaceOrderResponse placeOrderForUser(int customerEDP, String accessToken, List<Map<String, String>> itemsToBeAdded, int easyPayInstallment, String noOfItemsToBeAdded, boolean bCheckExisting, int itemToBeAdded) throws IOException {
-		List<Map<String, Object>> shoppingCartObject = new ShoppingCartPage(this.getDriver()).verifyCartExistsForUser(customerEDP, accessToken, itemsToBeAdded, noOfItemsToBeAdded, bCheckExisting, itemToBeAdded);
+		List<Map<String, Object>> shoppingCartObject = (new ShoppingCartPage(this.getDriver())).verifyCartExistsForUser(customerEDP, accessToken, itemsToBeAdded, noOfItemsToBeAdded, bCheckExisting, itemToBeAdded);
 		Response response;
 		PlaceOrderResponse placeOrderResponse;
 

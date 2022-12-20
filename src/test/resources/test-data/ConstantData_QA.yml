@@ -342,10 +342,16 @@ checkOut:
       styleExist: "true"
       sameSizeAndStyle: "true"
     - searchKeyword: "rings"
-      quantity: "more than 1"
+      quantity: "more than 3"
+      badgeRequired: "false"
+      itemToBeAdded: "2"
+      styleExist: "true"
+      sameSizeAndStyle: "true"
+    - searchKeyword: "gym"
+      quantity: ""
       badgeRequired: "false"
       itemToBeAdded: "1"
-      styleExist: "true"
+      styleExist: "false"
       sameSizeAndStyle: "true"
   #lst_SearchingKeywordForPlaceOrder: ["jeggings","joan rivers","Beauty"]
   lst_SearchingKeywordForPlaceOrder: ["furniture","rings","gym"]
