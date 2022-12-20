@@ -25,6 +25,7 @@ public class PD_TC04_VerifyProductDetail_RightSection_ItemDetailsWithoutEasyPayA
 		reporter.reportLog("ProductDetail Page");
 
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
+		//List<String> lstKeywordList=TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
 		reporter.reportLog("Switch to ProductDetail page");
 		String lsProductNumber,lsUrl;
 

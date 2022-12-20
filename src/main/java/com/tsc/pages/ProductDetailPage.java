@@ -235,7 +235,7 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__colours__selected']")
 	public WebElement lblRadioProductStyleStatic;
 
-	@FindBy(xpath = "//section[@class='pdp-description']//*[@class='pdp-description__form']")
+	@FindBy(xpath = "//section[@class='pdp-description']//*[@class='pdp-description__form__colours']")
 	public WebElement lblProductStyleStaticText;
 
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__colours__selected']")

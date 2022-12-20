@@ -1,6 +1,6 @@
 # API USER TOKEN INFO
 apiUserSessionParams:
-  lbl_username: qa1234@rogers.com
+  lbl_username: testautomation2@rogers.com
   lbl_password: qa1234
   lbl_grantType: password
   lbl_apiKey: A9607F64-D061-4279-8D00-F8469EA38DD1
@@ -40,12 +40,12 @@ headerSection:
   lbl_SignInLandingPage: /pages/signin
   lbl_SearchBoxPlaceholder: Search
   lbl_ShoppingCartLinkName: Bag
-  lnk_ShoppingCartLink: /pages/shoppingbag
+  lnk_ShoppingCartLink: /pages/shoppingcart
   lst_HeaderNameAndLinksMap: {
     Today's Showstopper: ["Today's Showstopper","Today's Showstopper-FR","/pages/todaysshowstopper?ic=HP_TodaysShowstopper"],
     Watch TSC:  ["Watch TSC","Watch TSC-FR",""],
     Favourites: ["Favourites","","/pages/myaccount/favourites"]
-   }
+  }
   #Fourth parameter in list is true for those keys that have re-direct url present in application
   lst_WatchTSCNameAndLinksMap: {
     Watch Us Live: ["Watch Us Live","En direct","/pages/watchuslive?ic=HP_WatchUsLive","false"],
@@ -82,7 +82,7 @@ headerSection:
     lbl_LandingPageBrandShopAll: Shop By Brand
     lbl_FlyoutHeadingLandingPageLink: /pages/category?nav=n
   lbl_ParialURLEndWatchTSC: "&fm=top_header"
-   
+
 homePage:
   lbl_OnAirNow: ON AIR NOW
   lbl_RecentlyAir: RECENTLY AIRED
@@ -102,18 +102,19 @@ searchResultPage:
   lbl_ProductNumberToComparePRPAndPDPContent: "Brian Bailey Wedge Dress"
   lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
   lst_APISearchingKeyword: ["dress","jegging","boots","Beauty"]
+  lst_BackUpSearchingKeyword: ["furniture","rings","gym"]
   lst_ShoppingCartSearchKeyword: ["boots","dress"]
   lbl_SearchResultPageDefaultSetting: 36
-  lst_SearchResultMessage:  [ "Showing results for" , "able to find any results" ] 
+  lst_SearchResultMessage:  [ "Showing results for" , "able to find any results" ]
   lst_SortOption: ["Featured Products","Newest First","Reviews: Highest First","Price: Lowest First","Price: Highest First","Brand Name: A to Z"]
   lst_FilterOptionHeader: ["Category","Brand","Shop by brand","Shop by price label","Shop by colour","Size","Rollup size fashion","Shop by collection","Price","Reviews","Shop by more ways","Shop by clearance"]
   lst_Filter_Data: ["Price: Highest First","Price: Lowest First","Reviews: Highest First","Brand Name: A to Z"]
   lst_SortOptionMobile: ["Sort by : Featured Products","Sort by : Newest First","Sort by : Reviews: Highest First","Sort by : Price: Lowest First","Sort by : Price: Highest First","Sort by : Brand Name: A to Z"]
   lst_SearchOption:
     - filterType: Product
-      filterOption: 
-      - ["Shop by brand","Joan Rivers"]
-      - ["Shop by colour","Pink"]
+      filterOption:
+        - ["Shop by brand","Joan Rivers"]
+        - ["Shop by colour","Pink"]
     - filterType: Price
       filterOption:
         - ["Price","Under $100","Under"]
@@ -123,21 +124,21 @@ searchResultPage:
         - ["Reviews","3 Stars"]
         - ["Price","Under $100"]
     - filterType: SequentialAction
-      filterOption: 
+      filterOption:
         - ["Shop by brand","Joan Rivers"]
         - ["Price","Under $100"]
         - ["Shop by colour","Green"]
     - filterType: FilterBugs
-      filterOption:  
+      filterOption:
         - ["Shop by brand","Pajar"]
-        - ["Shop by colour","Black"] 
+        - ["Shop by colour","Black"]
     - filterType: CuratedCollectionsBugs
-      filterOption:  
-        - ["Jewellery","The Vault"]              
+      filterOption:
+        - ["Jewellery","The Vault"]
     - filterType: BreadCrumbBugs
-      filterOption:  
+      filterOption:
         - ["Category","Pants & Shorts"]
-        - ["Price","Under $100"] 
+        - ["Price","Under $100"]
         - ["Category","Leggings & Jeggings"]
     - filterType: PRPApiCallMultipleParameter
       filterOption:
@@ -155,7 +156,7 @@ searchResultPage:
   lbl_ProductRecommendationTitlePage: ["People who viewed this item also viewed","TOP SELLERS"]
   lbl_AddToBagPopupWindowTitle: "\\d+ ITEM(S)? ADDED TO YOUR SHOPPING BAG"
   lbl_VideoDisclaimInfo: "Pre-recorded videos contain pricing or promotional offers that may have expired."
-  lbl_AdvancedOrderkeyword: 486049
+  lbl_AdvancedOrderkeyword: 522809
   lbl_AdvancedOrderMessage: "Est. Ship/Pick-up Date"
   lbl_AutoDeliverykeyword: 603108
   lbl_productTrueFitAndSizingChart: 404791
@@ -166,9 +167,9 @@ searchResultPage:
   lbl_TellYourFriendsSentMessage: "Your message has been sent!"
   lbl_ProductNumberWithBandAndReviewAndSeeMore: 402173 #525780-This is product no for review with image
   lst_ClearanceKeyword: ["Clearance","Home & Garden","Collectibles"]
-footerSection: 
+footerSection:
   lst_SocialMediaLinks: ["https://www.facebook.com/Shoptsc","https://twitter.com/shoptsc","https://instagram.com/shoptsc","www.youtube.com","https://www.pinterest.ca/shoptsc"]
-  lst_NameAndLinks: 
+  lst_NameAndLinks:
     - ["Credit Card","Cartes-cadeaux","/pages/creditcard?ic=ftr_tsccreditcard","",""]
     - ["Gift Card","Inscrivez-vous maintenant","/pages/giftcard?ic=ftr_tscgiftcard-img","",""]
     - ["Send us feedback","Dites-nous ce que vous pensez","https://rogers.qualtrics.com/","",""]
@@ -283,19 +284,21 @@ myAccount:
   lblErrorMessageWithInvalidUserNameAndPasswordForOrderTrackingPortal: "This email and password combination does not match our records. Please double check and try again."
   lblTrackingOrderPortalNotFoundMessage: "We are sorry! The page you are trying to reach cannot be found."
 
-lstTestName: []
+lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card",
+              "MA_TC18_MyPreferences_MyNewsletters",
+              "PD_TC"]
 lblChromeBrowserVersion: "99"
 shoppingCart:
   lst_SearchKeywords:
-    - searchKeyword: "furniture"
+    - searchKeyword: "boots"
       quantity: "more than 1"
-      badgeRequired: "false"
+      badgeRequired: "true"
       itemToBeAdded: "1"
       styleExist: "true"
       sameSizeAndStyle: "true"
-    - searchKeyword: "rings"
+    - searchKeyword: "pants"
       quantity: "more than 3"
-      badgeRequired: "false"
+      badgeRequired: "true"
       itemToBeAdded: "1"
       styleExist: "true"
       sameSizeAndStyle: "true"
@@ -306,7 +309,7 @@ shoppingCart:
       styleExist: "false"
     - searchKeyword: "legging"
       quantity: "more than 1"
-      badgeRequired: "false"
+      badgeRequired: "true"
       itemToBeAdded: "1"
       styleExist: "true"
       sameSizeAndStyle: "true"
@@ -316,15 +319,15 @@ shoppingCart:
   lblJayCareFoundationDonationMessage: "Jays Care Foundation Donation"
 checkOut:
   lst_SearchKeywords:
-    - searchKeyword: "furniture"
+    - searchKeyword: "jean"
       quantity: "more than 1"
-      badgeRequired: "false"
+      badgeRequired: "true"
       itemToBeAdded: "1"
       styleExist: "true"
       sameSizeAndStyle: "true"
-    - searchKeyword: "rings"
+    - searchKeyword: "pants"
       quantity: "more than 3"
-      badgeRequired: "false"
+      badgeRequired: "true"
       itemToBeAdded: "2"
       styleExist: "true"
       sameSizeAndStyle: "true"
@@ -335,26 +338,19 @@ checkOut:
       styleExist: "false"
       sameSizeAndStyle: "true"
   lstOrderDetailItems:
-    - searchKeyword: "furniture"
+    - searchKeyword: "jeggings"
       quantity: "more than 1"
-      badgeRequired: "false"
+      badgeRequired: "true"
       itemToBeAdded: "1"
       styleExist: "true"
       sameSizeAndStyle: "true"
-    - searchKeyword: "rings"
-      quantity: "more than 3"
-      badgeRequired: "false"
-      itemToBeAdded: "2"
+    - searchKeyword: "joan rivers"
+      quantity: "more than 1"
+      badgeRequired: "true"
+      itemToBeAdded: "1"
       styleExist: "true"
       sameSizeAndStyle: "true"
-    - searchKeyword: "gym"
-      quantity: ""
-      badgeRequired: "false"
-      itemToBeAdded: "1"
-      styleExist: "false"
-      sameSizeAndStyle: "true"
-  #lst_SearchingKeywordForPlaceOrder: ["jeggings","joan rivers","Beauty"]
-  lst_SearchingKeywordForPlaceOrder: ["furniture","rings","gym"]
+  lst_SearchingKeywordForPlaceOrder: ["jeggings","joan rivers","Beauty"]
   addShippingAddressErrorMessage: ["You have one or more missing or invalid entries. Please enter correct data and try again.",
                                    "First name is required.","Last name is required.","Phone number is required.","Address is required.",
                                    "City is required.","Province is required.","Postal code is required."]
@@ -396,7 +392,7 @@ checkOut:
   lstInvalidGiftCardAndErrorMessage: ["6006499999999999999","9999","The System could not validate the Gift Card. Please try again."]
   lblEmptyGiftCardPinErrorMessage: "PIN is required."
   lstShippingAddressErrorMessageForGuestCheckout: [ "You have one or more missing or invalid entries. Please enter correct data and try again.",
-                                    "First name is required.","Last name is required.","Phone number is required.","Address is required.",
-                                    "City is required.","Postal code is required.","Valid email is required.","Password is required." ]
+                                                    "First name is required.","Last name is required.","Phone number is required.","Address is required.",
+                                                    "City is required.","Postal code is required.","Valid email is required.","Password is required." ]
 
 #https://qa-tsc.tsc.ca/pages/myaccount/orderstatus/details?orderNo=Z4057821

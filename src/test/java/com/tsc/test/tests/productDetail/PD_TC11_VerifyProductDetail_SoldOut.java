@@ -27,6 +27,7 @@ public class PD_TC11_VerifyProductDetail_SoldOut extends BaseTest{
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("ProductDetail Page");
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
+		//List<String> lstKeywordList=TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
 		Map<String,Object> outputDataCriteria = new HashMap<>();
 		outputDataCriteria.put("video", "0");
 		outputDataCriteria.put("style", "1");

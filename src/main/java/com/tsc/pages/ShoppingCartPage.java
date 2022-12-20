@@ -1337,13 +1337,15 @@ public class ShoppingCartPage extends BasePage {
 			}
 		}
 
-		String productNumberAddToBag= addToBagMap.get("productNumber").toString();
-		String productNumberShoppingCart=cartItemMap.get("productNumber").toString();
-		if(productNumberAddToBag.equalsIgnoreCase(productNumberShoppingCart)){
-			reporter.reportLogPass("The Product number in AddToBag displaying is the same as shopping cart");
-		}
-		else{
-			reporter.reportLogFail("The Product number in AddToBag:"+productNumberAddToBag+" displaying is not the same as shopping cart:"+productNumberShoppingCart);
+		if(cartItemMap.get("productNumber")!=null){
+			String productNumberAddToBag= addToBagMap.get("productNumber").toString();
+			String productNumberShoppingCart=cartItemMap.get("productNumber").toString();
+			if(productNumberAddToBag.equalsIgnoreCase(productNumberShoppingCart)){
+				reporter.reportLogPass("The Product number in AddToBag displaying is the same as shopping cart");
+			}
+			else{
+				reporter.reportLogFail("The Product number in AddToBag:"+productNumberAddToBag+" displaying is not the same as shopping cart:"+productNumberShoppingCart);
+			}
 		}
 
 		if(!bAPI){

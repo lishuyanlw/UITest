@@ -23,7 +23,6 @@ public class SR_TC11_VerifyProductSearchResult_SpecialOffersAndRecommendationSec
 		//List<String> productRecommendationTitleText = TestDataHandler.constantData.getSearchResultPage().getLbl_ProductRecommendationTitlePage();
 		List<WebElement> productList;
 
-		// Corresponding actions (Clearance>>Beauty)
 		String subMenuItem = getglobalheaderPageThreadLocal().getNameAndclickSubMenuItem(lst_ClearanceKeyword.get(0),lst_ClearanceKeyword.get(1),lst_ClearanceKeyword.get(2));
 		//String subMenuItem = getglobalheaderPageThreadLocal().getNameAndclickSubMenuItem("Clearance","Beauty",null);
 		
@@ -34,11 +33,18 @@ public class SR_TC11_VerifyProductSearchResult_SpecialOffersAndRecommendationSec
 
 		// Verifying title of the page after navigation
 		String value = getProductResultsPageThreadLocal().getProductResultPageTitle(getProductResultsPageThreadLocal().lblSearchResultTitle);
-		if(subMenuItem.toLowerCase().contains(lst_ClearanceKeyword.get(0).toLowerCase())){
-			reporter.softAssert(subMenuItem.toLowerCase().contains(value.toLowerCase()), "Product Result Title Verified and title is " + value+" instead of "+subMenuItem,"Product Result Title is not as expected and title is " + value+" instead of "+subMenuItem);
+		boolean bFound=false;
+		for(String keyWord:lst_ClearanceKeyword){
+			if(keyWord.toLowerCase().contains(value.toLowerCase().trim())){
+				bFound=true;
+				break;
+			}
+		}
+		if(bFound){
+			reporter.reportLogPass("The Product Result Title:"+value+" can be found in Clearance Keyword list in yaml file");
 		}
 		else{
-			reporter.softAssert(value.equalsIgnoreCase(subMenuItem), "Product Result Title Verified and title is " + value,"Product Result Title is not as expected and title is " + value);
+			reporter.reportLogFail("The Product Result Title:"+value+" can not be found in Clearance Keyword list in yaml file");
 		}
 
         // Verifying Search Result message and default Page Number Count on Page
