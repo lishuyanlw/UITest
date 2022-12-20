@@ -61,7 +61,7 @@ public class HP_TC02_VerifyOnAirSection extends BaseTest {
 
 	 if(homePageThreadLocal().verifyRAimgCount()){
 		int imageCount = homePageThreadLocal().getRAimgCount();
-		 reporter.reportLogPass("Image Count in Recently Aired Section is: "+imageCount);
+		 reporter.reportLog("Image Count in Recently Aired Section is: "+imageCount);
 		 for(int i=0; i<imageCount; i++) {
 			 if(homePageThreadLocal().validateRAsectionImages(i)){
 				 reporter.reportLogPass("Image & Link is present for tile: "+(i+1));
@@ -78,7 +78,7 @@ public class HP_TC02_VerifyOnAirSection extends BaseTest {
 		 }
 	 }
 	 else
-		 reporter.reportLogFailWithScreenshot("Image Count in Recently Aired Section is: "+homePageThreadLocal().getRAimgCount());
+		 reporter.reportLog("Image Count in Recently Aired Section is: "+homePageThreadLocal().getRAimgCount());
 
 	 if(homePageThreadLocal().btnShopAllTodaysItemVisible())
 		 reporter.reportLogPass("Shop All Today'S Items button is visible");
