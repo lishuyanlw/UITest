@@ -105,13 +105,15 @@ public class CP_TC09_VerifyPaymentMethod_Add_Remove_PaymentType_And_PayPal exten
             //Verify new card is displayed on Checkout page after save - covered in function - verifyPaymentMethodOnCheckoutWithCardOnAddChangeDialog()
             reporter.reportLog("Verify new card is displayed on Checkout page after save");
             for(String cardType:creditCardType){
-                getRegularCheckoutThreadLocal().refreshPageForMobileTablet();
+//                getRegularCheckoutThreadLocal().refreshPageForMobileTablet();
                 selectedCard = cardType;
+                reporter.reportLog("cardType: "+cardType);
                 getRegularCheckoutThreadLocal().openUsingNewCardDialog();
                 //Verify by adding all types of cards
                 reporter.reportLog("Verify by adding all types of cards for credit card: "+cardType);
                 getRegularCheckoutThreadLocal().addNewCreditOrEditExistingCard(cardType,true,false);
-                getRegularCheckoutThreadLocal().closeAddOrChangePaymentMethodDialog(true);
+//                getRegularCheckoutThreadLocal().closeAddOrChangePaymentMethodDialog(true);
+                getRegularCheckoutThreadLocal().closeUsingANewCardDialog(true);
                 //Store payment method saved on checkout page after adding payment method
                 String paymentMethodCardType = getRegularCheckoutThreadLocal().getSelectedPaymentMethodFromCheckout(getRegularCheckoutThreadLocal().lblSelectedCardTypeForPayment);
                 getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();

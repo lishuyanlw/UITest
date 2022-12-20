@@ -293,6 +293,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentMethodWrap')]//div[@class='paymentmethod__label']/following-sibling::div//*[contains(@class,'tag')]")
 	public WebElement lblSelectedCardTypeForPayment;
 
+	@FindBy(xpath = "//div[@class='ReactModalPortal']")
+	public List<WebElement> lstReactModelPortalList;
+
 	////////////////////////////////////////////////////////////
 	//For popup dialog to add or change payment method by clicking btnAddOrChangePaymentMethod button
 	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//div[@class='modal__header']//h3")
@@ -367,38 +370,38 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[@class='modal__header']/h3")
 	public WebElement lblUsingANewCardDialogTitle;
 
-	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='card__header']")
+	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card') or contains(@aria-label,'Edit Payment Card')]//div[@class='card__header']")
 	public WebElement lblUsingANewCardSelectTitle;
 
-	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//button[contains(@class,'modal__button-back')]")
+	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card') or contains(@aria-label,'Edit Payment Card')]//button[contains(@class,'modal__button-back')]")
 	public WebElement btnUsingANewCardDialogBackButton;
 
-	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//button[contains(@class,'modal__button-close')]")
+	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card') or contains(@aria-label,'Edit Payment Card')]//button[contains(@class,'modal__button-close')]")
 	public WebElement btnUsingANewCardDialogCloseButton;
 
-	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='creditcard__selector--cc']")
+	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card') or contains(@aria-label,'Edit Payment Card')]//div[@class='creditcard__selector-wrap']")
 	public WebElement cntUsingANewCardDialogCreditCard;
 
-	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='creditcard__selector--cc']//input")
+	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card') or contains(@aria-label,'Edit Payment Card')]//div[@class='creditcard__selector--cc']//input")
 	public WebElement inputUsingANewCardDialogCreditCardRadio;
 
-	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='creditcard__selector--cc']//label")
+	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card') or contains(@aria-label,'Edit Payment Card')]//div[@class='creditcard__selector--cc']//label")
 	public WebElement labelUsingANewCardDialogCreditCardRadio;
 
-	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='creditcard__selector--tsc']")
+	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card') or contains(@aria-label,'Edit Payment Card')]//div[@class='creditcard__selector--tsc']")
 	public WebElement cntUsingANewCardDialogTSCCard;
 
-	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='creditcard__selector--tsc']//input")
+	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card') or contains(@aria-label,'Edit Payment Card')]//div[@class='creditcard__selector--tsc']//input")
 	public WebElement inputUsingANewCardDialogTSCCardRadio;
 
-	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='creditcard__selector--tsc']//label")
+	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card') or contains(@aria-label,'Edit Payment Card')]//div[@class='creditcard__selector--tsc']//label")
 	public WebElement labelUsingANewCardDialogTSCCardRadio;
 
 	//For Credit card
 	@FindBy(xpath = "//span[@id='semafoneResponseSpan']")
 	public WebElement lblInvalidCreditCardErrorMessage;
 
-	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='standardCCBlock']//h3[@class='semafone__cardnumber']")
+	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card') or contains(@aria-label,'Edit Payment Card')]//div[@class='standardCCBlock']//h3[@class='semafone__cardnumber']")
 	public WebElement lblUsingANewCardDialogCreditCardNumberTitle;
 
 	@FindBy(xpath = "//div[@class='standardCCBlock']//iframe")
@@ -408,13 +411,19 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//input[@id='pan']")
 	public WebElement inputCreditCardNumberInIframe;
 
+	@FindBy(xpath = "//input[@id='maskedPan']")
+	public WebElement inputCreditCardMaskNumberInIframe;
+
 	@FindBy(xpath = "//div[contains(@id,'CCNumberSemafone')]/input[@id='selectedNonTscCC']")
 	public WebElement inputEditExistingCreditCard;
 
 	@FindBy(xpath = "//div[@class='card__logo--verify']//*[contains(@class,'tagCCImage')]")
 	public WebElement lblInputCreditCardNumberType;
 
-	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='standardCCBlock']//h3[@class='semafone__expiration-title']")
+	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div")
+	public WebElement cntUsingANewCardDialogCreditExpirationContainer;
+
+	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card') or contains(@aria-label,'Edit Payment Card')]//div[@class='standardCCBlock']//h3[@class='semafone__expiration-title']")
 	public WebElement lblUsingANewCardDialogCreditExpirationDateTitle;
 
 	@FindBy(xpath = "//div[@class='standardCCBlock']//input[@id='creditCardMonthId']")
@@ -423,17 +432,29 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[@class='standardCCBlock']//input[@id='creditCardYearId']")
 	public WebElement inputUsingANewCardDialogCreditExpirationDateYear;
 
-	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='standardCCBlock']//span[@class='semafone__expiration-title']")
+	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card') or contains(@aria-label,'Edit Payment Card')]//div[@class='standardCCBlock']//span[@class='semafone__expiration-title']")
 	public WebElement lblUsingANewCardDialogCreditExpirationDateSlashBetweenMonthAndYear;
 
+	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div//*[@class='semafone__cvv-title']")
+	public WebElement lblUsingANewCardDialogCreditCVVTitle;
+
+	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div//*[@class='semafone__cvv-title']/div[not(@class='cvv__tooltip--msg')]")
+	public WebElement iconUsingANewCardDialogCreditCVVTooltip;
+
+	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div//*[@class='semafone__cvv-title']/div[@class='cvv__tooltip--msg']")
+	public WebElement lblUsingANewCardDialogCreditCVVTooltipMessage;
+
+	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div//input[@id='creditCardCvvId']")
+	public WebElement inputUsingANewCardDialogCreditCVV;
+
 	//For TSC card
-	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='tscBlock']//h3[@class='semafone__cardnumber']")
+	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card') or contains(@aria-label,'Edit Payment Card')]//div[@class='tscBlock']//h3[@class='semafone__cardnumber']")
 	public WebElement lblUsingANewCardDialogTSCCardNumberTitle;
 
-	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='tscBlock']//input[@id='tscCC']")
+	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card') or contains(@aria-label,'Edit Payment Card')]//div[@class='tscBlock']//input[@id='tscCC']")
 	public WebElement inputUsingANewCardDialogTSCCardNumber;
 
-	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//button[contains(@class,'modal__button--save')]")
+	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card') or contains(@aria-label,'Edit Payment Card')]//button[contains(@class,'modal__button--save')]")
 	public WebElement btnUsingANewCardDialogSaveButton;
 
 	/////////////////////////////////////////////////////////
@@ -466,25 +487,25 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//h2")
 	public WebElement lblOrderSummaryTitle;
 
-	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Sub-total')]")
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Sub-total')]|//div[contains(@class,'summary')]//div[@class='summary__label--wide' and contains(.,'Subtotal')]")
 	public WebElement lblOrderSummarySubTotalTitle;
 
-	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Sub-total')]/following-sibling::span[@class='summary__value']")
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Sub-total')]/following-sibling::span[@class='summary__value']|//div[contains(@class,'summary')]//div[@class='summary__label--wide' and contains(.,'Subtotal')]/following-sibling::div[@class='summary__value']")
 	public WebElement lblOrderSummarySubTotal;
 
-	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Shipping')]")
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Shipping')]|//div[contains(@class,'summary')]//div[@class='summary__label--wide' and contains(.,'Shipping')]")
 	public WebElement lblOrderSummaryShippingTitle;
 
-	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Shipping')]/following-sibling::span[@class='summary__value']")
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Shipping')]/following-sibling::span[@class='summary__value']|//div[contains(@class,'summary')]//div[@class='summary__label--wide' and contains(.,'Shipping')]/following-sibling::div[@class='summary__value']")
 	public WebElement cntOrderSummaryShippingPriceContainer;
 
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Shipping')]/following-sibling::span[@class='summary__value']//del")
 	public WebElement lblOrderSummaryShippingWasPrice;
 
-	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Est Taxes')]")
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Est Taxes')]|//div[contains(@class,'summary')]//div[@class='summary__label--wide' and contains(.,'Est. Taxes')]")
 	public WebElement lblOrderSummaryTaxTitle;
 
-	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Est Taxes')]/following-sibling::span[@class='summary__value']")
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Est Taxes')]/following-sibling::span[@class='summary__value']|//div[contains(@class,'summary')]//div[@class='summary__label--wide' and contains(.,'Est. Taxes')]/following-sibling::div[@class='summary__value']")
 	public WebElement lblOrderSummaryTax;
 
 	//For applied discount items
@@ -512,14 +533,11 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//b[contains(text(),'Applied Discounts')]/parent::span/parent::div/following-sibling::div//span[contains(@class,'summary__label')][contains(.,'Gift Card')]/following-sibling::span[@class='summary__value']")
 	public WebElement lblOrderSummaryGiftCardValue;
 
-	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[contains(@class,'summary__label') and contains(text(),'TOTAL PRICE')]")
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[contains(@class,'summary__label') and contains(text(),'TOTAL PRICE')]|//div[contains(@class,'summary')]//div[@class='summary__label--wide' and contains(.,'Total')]")
 	public WebElement lblOrderSummaryTotalPriceTitle;
 
-	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[contains(@class,'summary__label') and contains(text(),'TOTAL PRICE')]/following-sibling::span[contains(@class,'summary__value')]")
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[contains(@class,'summary__label') and contains(text(),'TOTAL PRICE')]/following-sibling::span[contains(@class,'summary__value')]|//div[contains(@class,'summary')]//div[@class='summary__label--wide' and contains(.,'Total')]/following-sibling::div[@class='summary__value']")
 	public WebElement lblOrderSummaryTotalPrice;
-
-	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__savingmsg']")
-	public WebElement lblOrderSummarySavingPrice;
 
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//div[@class='summary']/div[contains(@class,'summary__row')][last()]")
 	public WebElement lblOrderSummaryLastItem;
@@ -892,6 +910,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkIfPaymentMethodIsTSC(){
+		this.applyStaticWait(this.getStaticWaitForApplication());
 		return this.iconPaymentMethod.getAttribute("class").contains("tagCCImageTSC");
 	}
 
@@ -936,7 +955,13 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkOrderSummaryWasPriceExisting(){
-		return !this.getElementInnerText(lblOrderSummaryShippingWasPrice).isEmpty();
+		boolean bDel=this.checkChildElementExistingByTagName(cntOrderSummaryShippingPriceContainer,"del");
+		if(bDel){
+			return !this.getElementInnerText(lblOrderSummaryShippingWasPrice).isEmpty();
+		}
+		else{
+			return false;
+		}
 	}
 
 	/**
@@ -1161,6 +1186,9 @@ public class RegularCheckoutPage extends BasePage {
 			item=productItem.findElement(byProductFreeShipping);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText=item.getText().trim();
+			if(lsText.contains(":")){
+				lsText=lsText.split(":")[1];
+			}
 			map.put("productFreeShipping",lsText);
 		}
 		else{
@@ -1238,6 +1266,9 @@ public class RegularCheckoutPage extends BasePage {
 		if(this.checkProductShippingDateExisting()){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingDate);
 			lsText=lblShippingDate.getText().trim();
+			if(lsText.contains(":")){
+				lsText=lsText.split(":")[1];
+			}
 			map.put("shippingDate",lsText);
 		}
 		else{
@@ -1302,21 +1333,6 @@ public class RegularCheckoutPage extends BasePage {
 			else{
 				return this.getMultiFloatFromString(lsText).get(0);
 			}
-		}
-	}
-
-	/**
-	 * To get Saving Price From OrderSummary
-	 * @return - float
-	 */
-	public float getSavingPriceFromOrderSummary(){
-		if(this.checkOrderSummarySavingPriceExisting()){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummarySavingPrice);
-			String lsText=this.lblOrderSummarySavingPrice.getText();
-			return this.getFloatFromString(lsText);
-		}
-		else{
-			return 0.0f;
 		}
 	}
 
@@ -1727,7 +1743,7 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public boolean openAddOrChangePaymentMethodDialog(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethod);
-		this.clickElement(btnAddOrChangePaymentMethod);
+		btnAddOrChangePaymentMethod.click();
 		return this.waitForCondition(Driver->{return this.lblAddOrChangePaymentMethodDialogTitle.isDisplayed();},10000);
 	}
 
@@ -1934,8 +1950,95 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public void closeUsingANewCardDialog(boolean bSave){
 		if(bSave){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogSaveButton);
-			btnUsingANewCardDialogSaveButton.click();
+			boolean bClickSaveButtonSuccess=false;
+			for(int i=0;i<5;i++){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogSaveButton);
+				btnUsingANewCardDialogSaveButton.click();
+				waitForPageLoadingSpinningStatusCompleted();
+				this.applyStaticWait(5*this.getStaticWaitForApplication());
+				if(this.lstReactModelPortalList.size()==6){
+					continue;
+				}
+				else{
+					bClickSaveButtonSuccess=true;
+					break;
+				}
+			}
+			if(!bClickSaveButtonSuccess){
+				reporter.reportLogFail("Adding a new card failed due to API issue after 5 times try, so close the dialog directly!");
+				if (this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"), System.getProperty("chromeMobileDevice"))) {
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogBackButton);
+					btnUsingANewCardDialogBackButton.click();
+				}
+				else{
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogCloseButton);
+					btnUsingANewCardDialogCloseButton.click();
+				}
+				this.applyStaticWait(3*this.getStaticWaitForApplication());
+
+				if (this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"), System.getProperty("chromeMobileDevice"))) {
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethodDialogBackButton);
+					btnAddOrChangePaymentMethodDialogBackButton.click();
+				}
+				else{
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethodDialogCloseButton);
+					btnAddOrChangePaymentMethodDialogCloseButton.click();
+				}
+				this.applyStaticWait(3*this.getStaticWaitForApplication());
+			}
+
+		}
+		else{
+			if(this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogBackButton);
+				btnUsingANewCardDialogBackButton.click();
+			}
+			else{
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogCloseButton);
+				btnUsingANewCardDialogCloseButton.click();
+			}
+			this.applyStaticWait(2*getStaticWaitForApplication());
+		}
+	}
+
+	/*
+	public void closeUsingANewCardDialog(boolean bSave){
+		if(bSave){
+			boolean bClickSaveButtonSuccess=false;
+			for(int i=0;i<5;i++){
+				reporter.reportLog("i="+i);
+				try{
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogSaveButton);
+					btnUsingANewCardDialogSaveButton.click();
+					this.waitForPageLoadingSpinningStatusCompleted();
+				}
+				catch(Exception ex){
+					bClickSaveButtonSuccess=true;
+				}
+			}
+			if(!bClickSaveButtonSuccess){
+				reporter.reportLogFail("Adding a new card failed, so close the dialog directly!");
+				if (this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"), System.getProperty("chromeMobileDevice"))) {
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogBackButton);
+					btnUsingANewCardDialogBackButton.click();
+				}
+				else{
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogCloseButton);
+					btnUsingANewCardDialogCloseButton.click();
+				}
+				this.applyStaticWait(3*this.getStaticWaitForApplication());
+
+				if (this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"), System.getProperty("chromeMobileDevice"))) {
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethodDialogBackButton);
+					btnAddOrChangePaymentMethodDialogBackButton.click();
+				}
+				else{
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethodDialogCloseButton);
+					btnAddOrChangePaymentMethodDialogCloseButton.click();
+				}
+				this.applyStaticWait(3*this.getStaticWaitForApplication());
+			}
+
 			try {
 				waitForPageLoadingSpinningStatusCompleted();
 				this.applyStaticWait(5*getStaticWaitForApplication());
@@ -1956,6 +2059,7 @@ public class RegularCheckoutPage extends BasePage {
 			this.applyStaticWait(2*getStaticWaitForApplication());
 		}
 	}
+	*/
 
 	/**
 	 * To add a new TSC card
@@ -1980,6 +2084,7 @@ public class RegularCheckoutPage extends BasePage {
 		String cardNumber= (String) cardData.get("Number");
 		String expiredMonth=(String) cardData.get("DisplayExpirationMonth");
 		String expiredYear=(String) cardData.get("DisplayExpirationYear");
+		String cardCVV=(String) cardData.get("CVV");
 
 		if(!creditCardType.equalsIgnoreCase("tsc")){
 			if(!editExistingCreditCard){
@@ -2010,12 +2115,19 @@ public class RegularCheckoutPage extends BasePage {
 				this.waitForCondition(Driver->{return this.inputCreditCardNumberInIframe.isEnabled() &&
 						this.inputCreditCardNumberInIframe.isDisplayed();},10000);
 			}catch (Exception e){
-				this.applyStaticWait(6000);
+				this.applyStaticWait(3000);
 			}
 			//Using static wait as Sauce Lab sometimes take time to load and behaviour is in-consistent
 			this.applyStaticWait(3000);
-			inputCreditCardNumberInIframe.clear();
-			inputCreditCardNumberInIframe.sendKeys(cardNumber);
+			if(inputCreditCardNumberInIframe.getAttribute("style").contains("display: inline")){
+				inputCreditCardNumberInIframe.clear();
+				inputCreditCardNumberInIframe.sendKeys(cardNumber);
+			}
+			else{
+				inputCreditCardMaskNumberInIframe.click();
+				this.applyStaticWait(this.getStaticWaitForApplication());
+				inputCreditCardNumberInIframe.sendKeys(cardNumber);
+			}
 			this.getDriver().switchTo().defaultContent();
 
 			//Verify display of icon just after entering CC number
@@ -2035,6 +2147,12 @@ public class RegularCheckoutPage extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditExpirationDateYear);
 			inputUsingANewCardDialogCreditExpirationDateYear.clear();
 			inputUsingANewCardDialogCreditExpirationDateYear.sendKeys(expiredYear.substring(2));
+
+			if(this.checkCVVSectionExisting()){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditCVV);
+				inputUsingANewCardDialogCreditCVV.clear();
+				inputUsingANewCardDialogCreditCVV.sendKeys(cardCVV);
+			}
 		}else
 			this.addNewTSCCard();
 	}
@@ -2522,7 +2640,7 @@ public class RegularCheckoutPage extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummarySubTotal);
 		String lsText=this.lblOrderSummarySubTotal.getText();
-		map.put("subTotal",this.getFloatFromString(lsText,true));
+		map.put("subTotal",this.getFloatFromString(lsText));
 
 		map.put("wasPrice",getWasPriceFromOrderSummary());
 
@@ -2630,7 +2748,6 @@ public class RegularCheckoutPage extends BasePage {
 		lsText=this.lblOrderSummaryTotalPrice.getText();
 		map.put("totalPrice",this.getFloatFromString(lsText,true));
 
-		map.put("savePrice",getSavingPriceFromOrderSummary());
 		return map;
 	}
 
@@ -2707,14 +2824,6 @@ public class RegularCheckoutPage extends BasePage {
 			calSavePriceOrderSummary=Math.abs(wasPriceOrderSummary-nowPriceOrderSummary);
 		}
 		calSavePriceOrderSummary=calSavePriceOrderSummary+Math.abs(promoteCodeValue);
-
-		float savePriceOrderSummary=(float) orderSummaryMap.get("savePrice");
-		if(Math.abs(calSavePriceOrderSummary-savePriceOrderSummary)<0.01){
-			reporter.reportLogPass("The calculated saving price in OrderSummary section is equal to the saving price in OrderSummary section");
-		}
-		else{
-			reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is not equal to the saving price:"+savePriceOrderSummary+" in OrderSummary section");
-		}
 	}
 
 	/**
@@ -3302,16 +3411,6 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogPass("The OrderSummary Total Price is displaying correctly");
 		} else {
 			reporter.reportLogFailWithScreenshot("The OrderSummary Total Price is not displaying correctly");
-		}
-
-		if(checkOrderSummarySavingPriceExisting()){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummarySavingPrice);
-			lsText = lblOrderSummarySavingPrice.getText();
-			if (!lsText.isEmpty()) {
-				reporter.reportLogPass("The OrderSummary Saving Price is displaying correctly");
-			} else {
-				reporter.reportLogFailWithScreenshot("The OrderSummary Saving Price is not displaying correctly");
-			}
 		}
 	}
 
@@ -5166,12 +5265,14 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFail("The subTotal:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
 		}
 
-		shoppingCartValue = (float) shoppingCartItem.get("wasPrice");
-		checkoutValue = (float) checkoutItem.get("wasPrice");
-		if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
-			reporter.reportLogPass("The wasPrice in shoppingCart Item is the same as the one in checkout Item");
-		} else {
-			reporter.reportLogFail("The wasPrice:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		if(this.checkOrderSummaryWasPriceExisting()){
+			shoppingCartValue = (float) shoppingCartItem.get("wasPrice");
+			checkoutValue = (float) checkoutItem.get("wasPrice");
+			if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
+				reporter.reportLogPass("The wasPrice in shoppingCart Item is the same as the one in checkout Item");
+			} else {
+				reporter.reportLogFail("The wasPrice:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
+			}
 		}
 
 		shoppingCartValue = (float) shoppingCartItem.get("nowPrice");
@@ -5227,14 +5328,6 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogPass("The totalPrice in shoppingCart Item is the same as the one in checkout Item");
 		} else {
 			reporter.reportLogFail("The totalPrice:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
-		}
-
-		shoppingCartValue = (float) shoppingCartItem.get("savePrice");
-		checkoutValue = (float) checkoutItem.get("savePrice");
-		if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
-			reporter.reportLogPass("The savePrice in shoppingCart Item is the same as the one in checkout Item");
-		} else {
-			reporter.reportLogFail("The savePrice:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
 		}
 	}
 
@@ -5500,7 +5593,14 @@ public class RegularCheckoutPage extends BasePage {
 		inputUsingANewCardDialogCreditExpirationDateYear.clear();
 		inputUsingANewCardDialogCreditExpirationDateYear.sendKeys(expiredYear.substring(2));
 
-		this.closeAddOrChangePaymentMethodDialog(true);
+		if(this.checkCVVSectionExisting()){
+			String cardCVV= (String) creditCardData.get("CVV");
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditCVV);
+			inputUsingANewCardDialogCreditCVV.clear();
+			inputUsingANewCardDialogCreditCVV.sendKeys(cardCVV);
+		}
+
+		this.closeUsingANewCardDialog(true);
 		//Applying static wait as UI takes some time for new expiry to be updated and there is no other condition to wait for
 		this.applyStaticWait(3000);
 		this.verifyPaymentMethodOnCheckoutWithCardOnAddChangeDialog(null, creditCardData,expiredMonth,expiredYear);
@@ -6768,6 +6868,30 @@ public class RegularCheckoutPage extends BasePage {
 		}
 
 		return mapList;
+	}
+
+	/**
+	 * To check CVV Section Existing
+	 * @return - boolean
+	 */
+	public boolean checkCVVSectionExisting(){
+		return this.checkChildElementExistingByAttribute(cntUsingANewCardDialogCreditExpirationContainer,"class","creditcard__cvv-wrap");
+	}
+
+	/**
+	 * To check CVV Tooltip Displaying
+	 * @return - boolean
+	 */
+	public boolean checkCVVTooltipDisplaying(){
+		return this.checkChildElementExistingByAttribute(lblUsingANewCardDialogCreditCVVTitle,"class","cvv__tooltip--msg");
+	}
+
+	/**
+	 * To check Error Message Existing For Adding New CreditCard
+	 * @return - boolean
+	 */
+	public boolean checkErrorMessageExistingForAddingNewCreditCard(){
+		return this.checkChildElementExistingByAttribute(cntUsingANewCardDialogCreditCard,"class","creditcard__error-wrap");
 	}
 
 }

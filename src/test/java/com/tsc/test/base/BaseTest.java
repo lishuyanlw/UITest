@@ -587,7 +587,7 @@ public class BaseTest {
 			}
 		}
 
-		org.json.simple.JSONObject creditCardDetails = DataConverter.readJsonFileIntoJSONObject("test-data/CreditCard.json");
+		org.json.simple.JSONObject creditCardDetails = DataConverter.readJsonFileIntoJSONObject("test-data/TokenizedCreditCard.json");
 		accountAPI.addCreditCardToUser((org.json.simple.JSONObject) creditCardDetails.get("tsc"),hashMap.get("customerEDP"),hashMap.get("access_token"));
 
 		Response responseInitial=cartAPI.getAccountCartContentWithCustomerEDP(hashMap.get("customerEDP"),hashMap.get("access_token"));

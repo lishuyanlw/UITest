@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.util.List;
 
 
+
 public class MyAccount extends BasePage {
 
 	public MyAccount(WebDriver driver) {
@@ -464,11 +465,29 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//input[@id='maskedPan']")
 	public WebElement lblMaskedCardNumberForNewCreditCard;
 
+	@FindBy(xpath = "//div[@id='panExpirationDate']")
+	public WebElement cntExpirationDateContainerForNewCreditCard;
+
 	@FindBy(xpath = "//select[@name='month']")
-	public WebElement lblMonthForNewCreditCard;
+	public WebElement lblExpirationMonthForNewCreditCard;
 
 	@FindBy(xpath = "//select[@name='year']")
 	public WebElement lblExpirationYearForNewCreditCard;
+
+	@FindBy(xpath = "//div[@id='panExpirationDate']//div[contains(@class,'cvvFormGroup')]")
+	public WebElement cntCVVContainerForNewCreditCard;
+
+	@FindBy(xpath = "//div[@id='panExpirationDate']//label[contains(@class,'cvvLabel')]")
+	public WebElement labelCVVForNewCreditCard;
+
+	@FindBy(xpath = "//div[@id='panExpirationDate']//div[contains(@class,'cvvToolTip')]")
+	public WebElement iconCVVTooltipForNewCreditCard;
+
+	@FindBy(xpath = "//div[@id='panExpirationDate']//div[contains(@role,'tooltip')]")
+	public WebElement lblCVVTooltipMessageForNewCreditCard;
+
+	@FindBy(xpath = "//div[@id='panExpirationDate']/div[contains(@class,'cvvFormGroup')]//input")
+	public WebElement inputCVVForNewCreditCard;
 
 	@FindBy(xpath = "//div[contains(@class,'text-danger')]")
 	public List<WebElement> lblErrorMessageForInvalidCreditCardNumber;
@@ -1166,7 +1185,7 @@ public class MyAccount extends BasePage {
 	 * @param -Map<String,String> - cardData
 	 */
 	public void addExpirationMonthAndYear(Map<String, String> cardData) {
-		getReusableActionsInstance().selectWhenReady(this.lblMonthForNewCreditCard, cardData.get("expirationMonth"), 6000);
+		getReusableActionsInstance().selectWhenReady(this.lblExpirationMonthForNewCreditCard, cardData.get("expirationMonth"), 6000);
 		getReusableActionsInstance().selectWhenReady(this.lblExpirationYearForNewCreditCard, cardData.get("expirationYear"), 6000);
 	}
 
@@ -1179,7 +1198,7 @@ public class MyAccount extends BasePage {
 	 * @param - boolean - isDefault value for Credit Card attached to user
 	 * @param- String - cardType to be added
 	 */
-	public Map<String, String> addNewValidCreditCardForUser(String cardType, String cardNumber, boolean isDefault) throws ParseException {
+	public Map<String, String> addNewValidCreditCardForUser(String cardType, String cardNumber, String cardCVV, boolean isDefault) throws ParseException {
 		String cardTypeToBeAdded = this.createXPath("//div[contains(@class,'editPayPad')]//ul/li/button/img[contains(@alt,'{0}')]", cardType);
 		WebElement cardTypeElement = getDriver().findElement(By.xpath(cardTypeToBeAdded));
 
@@ -1195,6 +1214,11 @@ public class MyAccount extends BasePage {
 			this.addNewOrEditExistingCreditCardNumber(cardType, cardNumber, true);
 			//Selecting Expiration Month and Year
 			this.addExpirationMonthAndYear(cardData);
+			if(this.checkCVVSectionExisting()){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputCVVForNewCreditCard);
+				inputCVVForNewCreditCard.clear();
+				inputCVVForNewCreditCard.sendKeys(cardCVV);
+			}
 		} else
 			this.lblTSCCreditCardInput.sendKeys(cardNumber);
 
@@ -4960,15 +4984,23 @@ public class MyAccount extends BasePage {
 
 	/**
 	 * This function verifies My Account Order Details Page Title
-	 *
-	 * @param userName
-	 * @param customerNumber
+	 * @param - String - userName
+	 * @param - String - customerNumber
 	 */
 	public void verifyMyAccountOrderDetailPageTitle(String userName, String customerNumber) {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsHeaderUserName);
 		String orderDetailTitleUserName = this.lblOrderDetailsHeaderUserName.getText().trim();
 		String orderDetailTitleCustomerNumber = this.lblOrderDetailsHeaderCustomerNumber.getText().trim();
 		String pageTitle = this.convertToASCII(orderDetailTitleUserName);
+		if(!pageTitle.toLowerCase().contains(userName.toLowerCase())){
+			this.refresh();
+			this.waitForPageToLoad();
+			this.waitForCondition(Driver->{return this.lblOrderDetailsHeaderUserName.isDisplayed();},120000);
+		}
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsHeaderUserName);
+		orderDetailTitleUserName = this.lblOrderDetailsHeaderUserName.getText().trim();
+		orderDetailTitleCustomerNumber = this.lblOrderDetailsHeaderCustomerNumber.getText().trim();
+		pageTitle = this.convertToASCII(orderDetailTitleUserName);
 		String expectedTitle = userName.toUpperCase() + "’S ACCOUNT";
 		if (pageTitle.equalsIgnoreCase(expectedTitle))
 			reporter.reportLogPass("User Name appears in title as expected");
@@ -5398,7 +5430,7 @@ public class MyAccount extends BasePage {
 	 * @return - PlaceOrderResponse
 	 */
 	public PlaceOrderResponse placeOrderForUser(int customerEDP, String accessToken, List<Map<String, String>> itemsToBeAdded, int easyPayInstallment, String noOfItemsToBeAdded, boolean bCheckExisting, int itemToBeAdded) throws IOException {
-		List<Map<String, Object>> shoppingCartObject = new ShoppingCartPage(this.getDriver()).verifyCartExistsForUser(customerEDP, accessToken, itemsToBeAdded, noOfItemsToBeAdded, bCheckExisting, itemToBeAdded);
+		List<Map<String, Object>> shoppingCartObject = (new ShoppingCartPage(this.getDriver())).verifyCartExistsForUser(customerEDP, accessToken, itemsToBeAdded, noOfItemsToBeAdded, bCheckExisting, itemToBeAdded);
 		Response response;
 		PlaceOrderResponse placeOrderResponse;
 
@@ -5498,7 +5530,7 @@ public class MyAccount extends BasePage {
 
 		//Verifying that user is navigated to shopping cart page
 		String currentPageURL = this.URL();
-		if (currentPageURL.contains("shoppingcart"))
+		if (currentPageURL.contains("shoppingbag"))
 			reporter.reportLogPass("User is navigated to Shopping Cart Page as expected with url as: " + currentPageURL);
 		else
 			reporter.reportLogFailWithScreenshot("User is not navigated to Shopping Cart Page: " + currentPageURL);
@@ -5545,6 +5577,22 @@ public class MyAccount extends BasePage {
 		} else {
 			reporter.reportLogFailWithScreenshot("The page is not navigated to order details page correctly");
 		}
+	}
+
+	/**
+	 * To check CVV Section Existing
+	 * @return - boolean
+	 */
+	public boolean checkCVVSectionExisting(){
+		return this.checkChildElementExistingByAttribute(cntExpirationDateContainerForNewCreditCard,"class","cvvFormGroup");
+	}
+
+	/**
+	 * To check CVV Tooltip Displaying
+	 * @return - boolean
+	 */
+	public boolean checkCVVTooltipDisplaying(){
+		return this.checkChildElementExistingByAttribute(cntCVVContainerForNewCreditCard,"class","popover");
 	}
 }
 

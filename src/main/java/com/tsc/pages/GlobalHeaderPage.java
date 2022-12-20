@@ -433,7 +433,7 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean verifyShoppingCartLink(String lsExpectedShoppingCartLink) {
-		String lsShoppingCartLink=this.ShoppingCartlnk.getAttribute("href");
+		String lsShoppingCartLink=this.ShoppingCartlnk.getAttribute("href").trim();
 		if(lsShoppingCartLink.isEmpty()) {
 			return false;
 		}

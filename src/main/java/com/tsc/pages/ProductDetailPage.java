@@ -3081,7 +3081,8 @@ public class ProductDetailPage extends BasePage {
 				break;
 			case "ConditionsForMultipleStyleAndSize":
 				for(String lsKeyword:lstKeyword) {
-					product=productAPI.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,false,true);
+					//product=productAPI.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,false,true);
+					product=productAPI.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,true,true);
 					if(product!=null) {
 						break;
 					}

@@ -30,7 +30,8 @@ public class SC_TC15_VerifyShoppingCart_CheckCartExceedingLimitMessage extends B
 			(new CartAPI()).deletePromoCodeAppliedOnCart(String.valueOf(customerEDP),accessToken);
 
 			//To Add 10 product EDP No with 10 quantity
-			List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
+			//List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
+			List<String> lstKeywordList=TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
 			getShoppingCartThreadLocal().addMultiProductEDPNo(lstKeywordList.get(2), String.valueOf(customerEDP), accessToken,15,10,10);
 
 			//Login using valid username and password

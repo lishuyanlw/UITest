@@ -661,13 +661,13 @@ public class GlobalFooterPage extends BasePage {
 	public List<WebElement> listOfMeetOurHostsImage;
 
 	//Rogers Copy Rights Image
-	@FindBy(xpath="//div[@class='gbl-ftr__copyright-msg']//strong[contains(@id,'ftrCopyright')]")
+	@FindBy(xpath="//div[@class='gbl-ftr__copyright-img']")
 	public WebElement RogersMedia;
 
-	@FindBy(xpath="//div[@class='gbl-ftr__copyright-msg']//strong[not(contains(@id,'ftrCopyright'))]")
+	@FindBy(xpath="//div[@class='gbl-ftr__copyright-text']")
 	public WebElement AllPrice;
 
-	@FindBy(xpath="//img[contains(@src,'Rogers.png')]")
+	@FindBy(xpath="//div[@class='gbl-ftr__copyright-img']//img[contains(@src,'rogers')]")
 	public WebElement RogersMediaImg;
 
 	public boolean bClickingInquiriesOrFeedback=false;

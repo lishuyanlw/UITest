@@ -46,7 +46,7 @@ public class CP_TC13_VerifyOrderModification_OrderConfirmation_AddPromoteCode_Ad
         PlaceOrderResponse placeOrderResponse = null;
         GetGivenOrderResponse getGivenOrderResponse = getMyAccountPageThreadLocal().getExistingOrderInEditableMode(2,customerEDP,accessToken);
         if(getGivenOrderResponse==null){
-            placeOrderResponse = getMyAccountPageThreadLocal().placeOrderForUser(Integer.parseInt(customerEDP),accessToken,itemsToBeAdded,2,"1",true,0);
+            placeOrderResponse = getMyAccountPageThreadLocal().placeOrderForUser(Integer.parseInt(customerEDP),accessToken,itemsToBeAdded,2,"all",true,0);
             orderNumber = placeOrderResponse.getOrderedCart().getOrderSummary().getOrderNo();
         }else
             orderNumber = getGivenOrderResponse.getOrderSummary().getOrderNo();

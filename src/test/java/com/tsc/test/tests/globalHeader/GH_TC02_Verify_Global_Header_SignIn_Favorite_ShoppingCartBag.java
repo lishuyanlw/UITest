@@ -113,7 +113,7 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateShoppingCartBagCounter(), "Shopping cart Bag counter is visible", "Shopping cart Bag counter is not visible");
 		
 		//Verify Shopping Cart href matches correct pattern
-		lsUrl=basePage.removeLastSlashFromUrl(lsBaseUrl)+TestDataHandler.constantData.getHeaderSection().getLnk_ShoppingCartLink();
+		lsUrl=basePage.removeLastSlashFromUrl(lsBaseUrl)+TestDataHandler.constantData.getHeaderSection().getLnk_ShoppingCartLink().trim();
 		lsSuccessResult=String.format("Shopping Cart link matches correct pattern of %s", lsUrl);
 		lsFailResult=String.format("Shopping Cart link does not match correct pattern of %s", lsUrl);
 		reporter.softAssert(getglobalheaderPageThreadLocal().verifyShoppingCartLink(lsUrl), lsSuccessResult, lsFailResult);

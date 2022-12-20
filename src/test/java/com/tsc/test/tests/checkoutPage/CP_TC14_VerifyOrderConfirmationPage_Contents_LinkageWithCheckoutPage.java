@@ -31,7 +31,7 @@ public class CP_TC14_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 		//Fetching test data from test data file
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
-		JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/CreditCard.json");
+		JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/TokenizedCreditCard.json");
 		//To empty the cart
 		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 
