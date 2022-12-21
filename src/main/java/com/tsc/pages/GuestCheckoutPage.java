@@ -279,7 +279,7 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			sum++;
 		}
-		this.waitForCondition(Driver->{return this.cntAddressLine1DropdownMenuListContainer.getAttribute("class").contains("react-autosuggest__suggestions-container--open");},20000);
+		this.waitForCondition(Driver->{return this.cntAddressLine1DropdownMenuListContainer.getAttribute("class").contains("react-autosuggest__suggestions-container--open");},60000);
 		this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
 
 		if(lstAddressLine1DropdownMenuList.size()>1){
@@ -300,7 +300,7 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 		}
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddressLine1DropdownMenuList.get(randomNumber));
 		this.getReusableActionsInstance().clickIfAvailable(this.lstAddressLine1DropdownMenuList.get(randomNumber));
-		this.waitForCondition(Driver->{return !this.cntAddressLine1DropdownMenuListContainer.getAttribute("class").contains("react-autosuggest__suggestions-container--open");},20000);
+		this.waitForCondition(Driver->{return !this.cntAddressLine1DropdownMenuListContainer.getAttribute("class").contains("react-autosuggest__suggestions-container--open");},60000);
 		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
 		String lsPhoneNumber="647"+DataConverter.getSaltString(7,"numberType");

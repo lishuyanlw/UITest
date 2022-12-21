@@ -5176,6 +5176,7 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFail("The productBadge in shoppingCart Item is not the same as the one in checkout Item");
 		}
 
+		/*
 		lsShoppingCartText=(String)shoppingCartItem.get("productNumber");
 		lsCheckoutText=(String)checkoutItem.get("productNumber");
 		if(lsShoppingCartText==null){
@@ -5183,7 +5184,7 @@ public class RegularCheckoutPage extends BasePage {
 				reporter.reportLogPass("The productNumber in shoppingCart Item is the same as the one in checkout Item");
 			}
 			else{
-				reporter.reportLogFail("The productNumber in shoppingCart Item is not the same as the one in checkout Item");
+				reporter.reportLogFail("The productNumber in shoppingCart Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
 			}
 		}
 		else{
@@ -5213,6 +5214,7 @@ public class RegularCheckoutPage extends BasePage {
 				reporter.reportLogFail("The productShippingDate:"+lsShoppingCartText+" in shoppingCart Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
 			}
 		}
+		*/
 
 		int shoppingCartLeftNumber=(int)shoppingCartItem.get("productLeftNumber");
 		int checkoutLeftNumber=(int)checkoutItem.get("productLeftNumber");

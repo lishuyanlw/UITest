@@ -1,5 +1,7 @@
 package com.tsc.test.tests.orderTracking;
 
+import com.tsc.api.pojo.GetGivenOrderResponse;
+import com.tsc.api.pojo.PlaceOrderResponse;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.base.BasePage;
@@ -30,6 +32,16 @@ public class OT_TC03_OrderTracking_ByOrderNumberAndBillingPostalCode extends Bas
         String accessToken = apiUserSessionData.get("access_token").toString();
         String customerEDP = apiUserSessionData.get("customerEDP").toString();
         getApiResponseThreadLocal().getUserDetailsFromCustomerEDP(customerEDP,accessToken).getCustomerNo();
+
+        //Adding TSC Credit Card to user for test
+        getShoppingCartThreadLocal().addTSCCreditCardForUser(null,customerEDP,accessToken);
+
+        //Adding place order
+        List<Map<String,String>> itemsToBeAdded = TestDataHandler.constantData.getCheckOut().getLstOrderDetailItems();
+        GetGivenOrderResponse getGivenOrderResponse = getMyAccountPageThreadLocal().getExistingOrderInEditableMode(2,customerEDP,accessToken);
+        if(getGivenOrderResponse==null) {
+            getMyAccountPageThreadLocal().placeOrderForUser(Integer.parseInt(customerEDP), accessToken, itemsToBeAdded, 2, "all", true, 0);
+        }
 
         List<Map<String,Object>> dataList = getOrderTrackingThreadLocal().getPlacedOrderListForUser(2,null,customerEDP,accessToken,null,null,null,null);
         Map<String,Object> dataMapItem=dataList.get(0);
