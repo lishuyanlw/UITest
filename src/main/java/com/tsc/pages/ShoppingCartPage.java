@@ -864,10 +864,11 @@ public class ShoppingCartPage extends BasePage {
 			map.put("productSize",null);
 			map.put("productNumber",null);
 			map.put("productNowPrice",0.0f);
-			map.put("productNowPrice",0.0f);
+			map.put("productWasPrice",0.0f);
 			map.put("productQuantity",1);
 			map.put("productQuantityDisabled",true);
 			map.put("freeShippingItem",true);
+			map.put("productShippingPrice",0.0f);
 
 			return map;
 		}

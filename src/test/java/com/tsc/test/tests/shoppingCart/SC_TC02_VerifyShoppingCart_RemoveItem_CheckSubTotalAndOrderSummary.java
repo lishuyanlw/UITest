@@ -31,11 +31,11 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 
 		List<Map<String,String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
 		List<Map<String,Object>> addedItemMapList=getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,"all",false,0);
-		if(addedItemMapList.size()==0){
+		if(addedItemMapList.size()<=1){
 			keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
 			addedItemMapList=getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,"all",false,0);
 			if(addedItemMapList.size()<=1){
-				keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
+				keyword = TestDataHandler.constantData.getCheckOut().getLstOrderDetailItems();
 				addedItemMapList=getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,"all",false,0);
 			}
 		}

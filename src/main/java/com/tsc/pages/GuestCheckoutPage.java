@@ -795,17 +795,22 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 	public void goToPaymentPage(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnContinueToPayment);
 		this.clickElement(btnContinueToPayment);
-		this.applyStaticWait(this.getStaticWaitForApplication());
+		this.applyStaticWait(3*this.getStaticWaitForApplication());
 
 		try{
 			this.waitForCondition(Driver->{return !this.checkChildElementExistingByAttribute(this.cntFooterContainer,"class","loading__overlay");},120000);
 		}
-		catch (Exception e){
-			this.applyStaticWait(10*this.getStaticWaitForApplication());
+		catch(Exception ex){
+			this.applyStaticWait(3*this.getStaticWaitForApplication());
 		}
 
-		this.waitForCondition(Driver->{return lblUsingANewCardSelectTitle.isDisplayed();},120000);
-		this.applyStaticWait(3*this.getStaticWaitForApplication());
+		try{
+			this.waitForCondition(Driver->{return lblUsingANewCardSelectTitle.isDisplayed();},120000);
+		}
+		catch (Exception ex1){
+			this.applyStaticWait(3*this.getStaticWaitForApplication());
+		}
+
 	}
 
 	/**
@@ -877,7 +882,7 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 			inputUsingANewCardDialogCreditExpirationDateYear.clear();
 			inputUsingANewCardDialogCreditExpirationDateYear.sendKeys(expiredYear.substring(2));
 
-			if(checkCVVTooltipDisplaying()){
+			if(this.checkCVVSectionExisting()){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditCVV);
 				inputUsingANewCardDialogCreditCVV.clear();
 				inputUsingANewCardDialogCreditCVV.sendKeys(cardCVV);

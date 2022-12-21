@@ -323,11 +323,8 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//button[@class='card__button--add']")
 	public WebElement btnAddOrChangePaymentMethodDialogUsingANewCardButton;
 
-	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//div[contains(@class,'card__wrap--paypal')]//label")
+	@FindBy(xpath = "//label[@for='tscPaypal']")
 	public WebElement labelAddOrChangePaymentMethodDialogPaypalRadio;
-
-	@FindBy(xpath = "//div[@class='card__wrap card__wrap--paypal']//label[contains(@class,'card__label')]")
-	public WebElement lblAddOrChangePaymentMethodDialogPayPalRadio;
 
 	@FindBy(xpath = "//div[@id='buttons-container']//div[contains(@class,'paypal-button-container')]")
 	public WebElement btnPayPalButton;
@@ -5491,9 +5488,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * This function verifies pay pal functionality
 	 */
 	public void verifyPayPalFunctionality(){
-		ShoppingCartPage shoppingCartPage = new ShoppingCartPage(this.getDriver());
-		//this.clickWebElementUsingJS(this.labelAddOrChangePaymentMethodDialogPaypalRadio);
-		this.clickWebElementUsingJS(this.lblAddOrChangePaymentMethodDialogPayPalRadio);
+		this.clickWebElementUsingJS(this.labelAddOrChangePaymentMethodDialogPaypalRadio);
 		this.applyStaticWait(5*this.getStaticWaitForApplication());
 		this.getDriver().switchTo().frame(this.framePayPalFrameElement);
 		this.waitForCondition(Driver->{return this.btnPayPalButton.isEnabled();},5000);
