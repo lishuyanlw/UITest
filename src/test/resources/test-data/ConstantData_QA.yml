@@ -40,7 +40,7 @@ headerSection:
   lbl_SignInLandingPage: /pages/signin
   lbl_SearchBoxPlaceholder: Search
   lbl_ShoppingCartLinkName: Bag
-  lnk_ShoppingCartLink: /pages/shoppingcart
+  lnk_ShoppingCartLink: /pages/shoppingbag
   lst_HeaderNameAndLinksMap: {
     Today's Showstopper: ["Today's Showstopper","Today's Showstopper-FR","/pages/todaysshowstopper?ic=HP_TodaysShowstopper"],
     Watch TSC:  ["Watch TSC","Watch TSC-FR",""],
@@ -100,7 +100,7 @@ searchResultPage:
   lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","Joan Rivers","100501" ]
   lst_SearchKeyword_Bugs: ["iPads & Tablets","desk  ","https://qa-tsc.tsc.ca/pages/productresults?&searchterm=desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
   lbl_ProductNumberToComparePRPAndPDPContent: "Brian Bailey Wedge Dress"
-  lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
+  lst_SearchKeyword_DropDown: [[ "dress","Categories","1" ]]
   lst_APISearchingKeyword: ["dress","jegging","boots","Beauty"]
   lst_BackUpSearchingKeyword: ["furniture","rings","gym"]
   lst_ShoppingCartSearchKeyword: ["boots","dress"]
@@ -166,7 +166,7 @@ searchResultPage:
   lst_WriteReviewSubmitMessage: ["THANK YOU!","We will process your review and publish it within 3-7 business days."]
   lbl_TellYourFriendsSentMessage: "Your message has been sent!"
   lbl_ProductNumberWithBandAndReviewAndSeeMore: 402173 #525780-This is product no for review with image
-  lst_ClearanceKeyword: ["Clearance","Home & Garden","Collectibles"]
+  lst_ClearanceKeyword: ["Clearance","Blouses","Shop all Blouses"]
 footerSection:
   lst_SocialMediaLinks: ["https://www.facebook.com/Shoptsc","https://twitter.com/shoptsc","https://instagram.com/shoptsc","www.youtube.com","https://www.pinterest.ca/shoptsc"]
   lst_NameAndLinks:

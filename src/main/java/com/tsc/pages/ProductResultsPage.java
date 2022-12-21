@@ -4014,5 +4014,13 @@ public class ProductResultsPage extends BasePage{
 			this.currentProductSequenceNumber=0;
 		}
 	}
+
+	/**
+	 * To check Product Search Result Existing
+	 * @return - boolean
+	 */
+	public boolean checkProductSearchResultExisting(){
+		return !this.checkChildElementExistingByTagName(cntSearchResultContainer,"section");
+	}
 }
 

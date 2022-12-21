@@ -5594,5 +5594,14 @@ public class MyAccount extends BasePage {
 	public boolean checkCVVTooltipDisplaying(){
 		return this.checkChildElementExistingByAttribute(cntCVVContainerForNewCreditCard,"class","popover");
 	}
+
+	/**
+	 * To wait For Spinning Status Completed For Save Action
+	 * @param - WebElement - save Button
+	 * @return - boolean
+	 */
+	public boolean waitForSpinningStatusCompletedForSaveAction(WebElement saveButton){
+		return this.waitForCondition(Driver->{return this.getChildElementCount(saveButton)==1;},120000);
+	}
 }
 
