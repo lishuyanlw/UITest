@@ -2154,7 +2154,8 @@ public class RegularCheckoutPage extends BasePage {
 			//Using static wait as Sauce Lab sometimes take time to load and behaviour is in-consistent
 			this.applyStaticWait(3000);
 			if(inputCreditCardNumberInIframe.getAttribute("style").contains("display: inline")){
-				inputCreditCardNumberInIframe.clear();
+				inputCreditCardNumberInIframe.click();
+				this.applyStaticWait(this.getStaticWaitForApplication());
 				inputCreditCardNumberInIframe.sendKeys(cardNumber);
 			}
 			else{
