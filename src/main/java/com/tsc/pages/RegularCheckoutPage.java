@@ -5121,7 +5121,7 @@ public class RegularCheckoutPage extends BasePage {
 			this.applyStaticWait(300);
 			
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderSummaryGiftCardApply);
-			btnOrderSummaryGiftCardApply.click();
+			this.clickElement(btnOrderSummaryGiftCardApply);
 			try{
 				this.waitForPageLoadingSpinningStatusCompleted();
 			}
