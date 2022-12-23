@@ -2155,6 +2155,7 @@ public class RegularCheckoutPage extends BasePage {
 			this.applyStaticWait(3000);
 			if(inputCreditCardNumberInIframe.getAttribute("style").contains("display: inline")){
 				inputCreditCardNumberInIframe.click();
+				inputCreditCardNumberInIframe.clear();
 				this.applyStaticWait(this.getStaticWaitForApplication());
 				inputCreditCardNumberInIframe.sendKeys(cardNumber);
 			}
