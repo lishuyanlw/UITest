@@ -313,6 +313,10 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath="//div[@class='swiper-wrapper']//div[contains(@class,'slide-active')]")
 	public List<WebElement> lstProgramGuidePageItems;
 
+	//For mobile and tablet
+	@FindBy(xpath="//button[@class='mega-nav-mobile__heading__close']")
+	public WebElement btnMobileHeadingCloseButton;
+
 	public void clickOnClearanceHeaderOption() {
 		getReusableActionsInstance().clickIfAvailable(clearanceHeader);
 	}
@@ -1024,6 +1028,15 @@ public class GlobalHeaderPage extends BasePage{
 			else
 				reporter.reportLogFailWithScreenshot("Watch TSC link for: "+lsTitle+" is not present and is empty");
 		}
+	}
+
+	/**
+	 * To close Mobile Heading Menu
+	 */
+	public void closeMobileHeadingMenu(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnMobileHeadingCloseButton);
+		btnMobileHeadingCloseButton.click();
+		this.applyStaticWait(this.getStaticWaitForApplication());
 	}
 }
 

@@ -2175,7 +2175,8 @@ public class RegularCheckoutPage extends BasePage {
 					reporter.reportLogFailWithScreenshot("Selected Credit Card : "+creditCardType+" not image is displayed as expected");
 			}
 
-			this.waitForCondition(Driver->{return !lblInputCreditCardNumberType.getAttribute("class").trim().isEmpty();},15000);
+			this.applyStaticWait(5*this.getStaticWaitForApplication());
+			//this.waitForCondition(Driver->{return !lblInputCreditCardNumberType.getAttribute("class").trim().isEmpty();},15000);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditExpirationDateMonth);
 			inputUsingANewCardDialogCreditExpirationDateMonth.clear();
 			inputUsingANewCardDialogCreditExpirationDateMonth.sendKeys(expiredMonth);
@@ -2227,8 +2228,8 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public String getInputCreditCardNumberType(){
 		//Applying static wait as on repeated use, stale element exception is coming for browser
-		this.applyStaticWait(2000);
-		this.waitForCondition(Driver->{return !lblInputCreditCardNumberType.getAttribute("class").trim().isEmpty();},15000);
+		this.applyStaticWait(5*this.getStaticWaitForApplication());
+		//this.waitForCondition(Driver->{return !lblInputCreditCardNumberType.getAttribute("class").trim().isEmpty();},15000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblInputCreditCardNumberType);
 		String lsCreditCardClass=lblInputCreditCardNumberType.getAttribute("class").trim();
 		if(lsCreditCardClass.contains(" ")){
