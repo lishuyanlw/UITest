@@ -326,9 +326,6 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//label[@for='tscPaypal']")
 	public WebElement labelAddOrChangePaymentMethodDialogPaypalRadio;
 
-	@FindBy(xpath = "//div[@id='buttons-container']//div[contains(@class,'paypal-button-container')]")
-	public WebElement btnPayPalButton;
-
 	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//button[contains(@class,'modal__button--save')]")
 	public WebElement btnAddOrChangePaymentMethodDialogSaveButton;
 
@@ -441,6 +438,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div//*[@class='semafone__cvv-title']/div[@class='cvv__tooltip--msg']")
 	public WebElement lblUsingANewCardDialogCreditCVVTooltipMessage;
 
+	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div//*[@class='semafone__cvv-title']/div[@class='cvv__tooltip--msg']//div[@class='cvv__tooltip--close']")
+	public WebElement btnUsingANewCardDialogCreditCVVTooltipCloseButton;
+
 	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div//input[@id='creditCardCvvId']")
 	public WebElement inputUsingANewCardDialogCreditCVV;
 
@@ -538,6 +538,9 @@ public class RegularCheckoutPage extends BasePage {
 
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//div[@class='summary']/div[contains(@class,'summary__row')][last()]")
 	public WebElement lblOrderSummaryLastItem;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__savingmsg']")
+	public WebElement lblOrderSummarySavingPrice;
 
 	// Changes for orderModificationPage
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[contains(@class,'summary__label') and contains(text(),'NEW TOTAL PRICE')]")
@@ -679,6 +682,9 @@ public class RegularCheckoutPage extends BasePage {
 	//PayPal
 	@FindBy(xpath = "//iframe[contains(@name,'paypal')]")
 	public WebElement framePayPalFrameElement;
+
+	@FindBy(xpath = "//div[@id='buttons-container']//div[contains(@class,'paypal-button-container')]")
+	public WebElement btnPayPalButton;
 
 	@FindBy(xpath = "//div[@id='splitEmail']//input[@id='email']")
 	public WebElement inputPayPalEmailInput;
@@ -1391,6 +1397,22 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
+	 * To get Saving Price From OrderSummary
+	 * @return - float
+	 */
+	public float getSavingPriceFromOrderSummary(){
+		if(this.checkOrderSummarySavingPriceExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummarySavingPrice);
+			String lsText=this.lblOrderSummarySavingPrice.getText();
+			return this.getFloatFromString(lsText);
+		}
+		else{
+			return 0.0f;
+		}
+	}
+
+
+	/**
 	 * To get Promote Code Tooltip Message though hovering on tooltip icon
 	 * @return - String
 	 */
@@ -1740,7 +1762,7 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public boolean openAddOrChangePaymentMethodDialog(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethod);
-		btnAddOrChangePaymentMethod.click();
+		this.clickElement(btnAddOrChangePaymentMethod);
 		return this.waitForCondition(Driver->{return this.lblAddOrChangePaymentMethodDialogTitle.isDisplayed();},10000);
 	}
 
@@ -1807,6 +1829,7 @@ public class RegularCheckoutPage extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnRemoveCardDialogCloseRemoveButton);
 			btnRemoveCardDialogCloseRemoveButton.click();
 			waitForPageLoadingSpinningStatusCompleted();
+			this.applyStaticWait(5*getStaticWaitForApplication());
 		}
 		else{
 			if(this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
@@ -1870,6 +1893,20 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLog("Remove pop up data is verified as expected");
 		else
 			reporter.reportLogFail("Remove pop up data is not verified..");
+	}
+
+	/**
+	 * This function to remove all payment methods for user
+	 */
+	public void removeAllPaymentMethodsForUser(){
+		int totalCardWebElements = this.lstAddOrChangePaymentMethodDialogAvailableCardContainer.size();
+		for(int i=0;i<totalCardWebElements-1;i++){
+			Map<String,Object> paymentMethodSelectedCard = this.getSelectedCardDetailsFromPaymentDialog();
+			WebElement removeButton = ((WebElement) paymentMethodSelectedCard.get("webElement")).findElement(this.byAddOrChangePaymentMethodDialogRemoveButton);
+			this.clickWebElementUsingJS(removeButton);
+			this.closeRemovePaymentMethodDialog(true);
+			this.waitForPageLoadingSpinningStatusCompleted();
+		}
 	}
 
 	public Map<String,Object> getSelectedCardDetailsFromPaymentDialog(){
@@ -2745,6 +2782,8 @@ public class RegularCheckoutPage extends BasePage {
 		lsText=this.lblOrderSummaryTotalPrice.getText();
 		map.put("totalPrice",this.getFloatFromString(lsText,true));
 
+		map.put("savePrice",getSavingPriceFromOrderSummary());
+
 		return map;
 	}
 
@@ -2821,6 +2860,14 @@ public class RegularCheckoutPage extends BasePage {
 			calSavePriceOrderSummary=Math.abs(wasPriceOrderSummary-nowPriceOrderSummary);
 		}
 		calSavePriceOrderSummary=calSavePriceOrderSummary+Math.abs(promoteCodeValue);
+
+		float savePriceOrderSummary=(float) orderSummaryMap.get("savePrice");
+		if(Math.abs(calSavePriceOrderSummary-savePriceOrderSummary)<0.01){
+			reporter.reportLogPass("The calculated saving price in OrderSummary section is equal to the saving price in OrderSummary section");
+		}
+		else{
+			reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is not equal to the saving price:"+savePriceOrderSummary+" in OrderSummary section");
+		}
 	}
 
 	/**
@@ -4376,6 +4423,58 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The CreditCard Expiration Date Year Input in using a new card Dialog is not displaying correctly");
 		}
 
+		if(this.checkCVVSectionExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblUsingANewCardDialogCreditCVVTitle);
+			lsText = lblUsingANewCardDialogCreditCVVTitle.getText();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The CreditCard CVV Title in using a new card Dialog is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The CreditCard CVV Title in using a new card Dialog is not displaying correctly");
+			}
+
+			String lsTestDevice = System.getProperty("Device").trim();
+			if(lsTestDevice.equalsIgnoreCase("Mobile")) {
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(iconUsingANewCardDialogCreditCVVTooltip);
+				iconUsingANewCardDialogCreditCVVTooltip.click();
+				reporter.reportLogWithScreenshot("Tooltip");
+				this.waitForCondition(Driver->{return this.checkCVVTooltipDisplaying();},10000);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblUsingANewCardDialogCreditCVVTooltipMessage);
+				lsText=lblUsingANewCardDialogCreditCVVTooltipMessage.getText();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The CreditCard CVV tooltip message in using a new card Dialog is displaying correctly after hovering on CVV icon");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The CreditCard CVV tooltip message in using a new card Dialog is not displaying correctly after hovering on CVV icon");
+				}
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnUsingANewCardDialogCreditCVVTooltipCloseButton);
+				this.clickElement(this.btnUsingANewCardDialogCreditCVVTooltipCloseButton);
+				this.applyStaticWait(this.getStaticWaitForApplication());
+			}
+			else{
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(iconUsingANewCardDialogCreditCVVTooltip);
+				this.getReusableActionsInstance().scrollToElement(iconUsingANewCardDialogCreditCVVTooltip);
+				reporter.reportLogWithScreenshot("Tooltip");
+				this.waitForCondition(Driver->{return this.checkCVVTooltipDisplaying();},10000);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblUsingANewCardDialogCreditCVVTooltipMessage);
+				lsText=lblUsingANewCardDialogCreditCVVTooltipMessage.getText();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The CreditCard CVV tooltip message in using a new card Dialog is displaying correctly after hovering on CVV icon");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The CreditCard CVV tooltip message in using a new card Dialog is not displaying correctly after hovering on CVV icon");
+				}
+				this.getReusableActionsInstance().scrollToElement(lblUsingANewCardDialogCreditCVVTitle);
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditCVV);
+			if(this.getReusableActionsInstance().isElementVisible(inputUsingANewCardDialogCreditCVV)){
+				reporter.reportLogPass("The CreditCard CVV input in using a new card Dialog is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The CreditCard CVV input in using a new card Dialog is not displaying correctly");
+			}
+		}
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelUsingANewCardDialogTSCCardRadio);
 		labelUsingANewCardDialogTSCCardRadio.click();
 		this.applyStaticWait(300);
@@ -5511,7 +5610,15 @@ public class RegularCheckoutPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPayPalButton);
 		this.waitForCondition(Driver->{return this.btnPayPalButton.isEnabled();},6000);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnPayPalButton);
-		this.waitForCondition(Driver->{return this.getDriver().getWindowHandles().size()>1;},5000);
+		try{
+			this.waitForCondition(Driver->{return this.getDriver().getWindowHandles().size()>1;},15000);
+		}
+		catch (Exception ex){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPayPalButton);
+			this.waitForCondition(Driver->{return this.btnPayPalButton.isEnabled();},6000);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnPayPalButton);
+		}
+
 		Set<String> windowHandles = this.getDriver().getWindowHandles();
 		if(windowHandles.size()>1){
 			for(String windowHandle:windowHandles){

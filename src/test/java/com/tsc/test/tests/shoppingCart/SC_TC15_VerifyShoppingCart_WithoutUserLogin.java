@@ -13,12 +13,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SC_TC16_VerifyShoppingCart_WithoutUserLogin extends BaseTest{
+public class SC_TC15_VerifyShoppingCart_WithoutUserLogin extends BaseTest{
 	/*
 	 * CER-862
 	 */
 	@Test(groups={"Regression","ShoppingCart"})
-	public void SC_TC16_VerifyShoppingCart_WithoutUserLogin() throws IOException {
+	public void SC_TC15_VerifyShoppingCart_WithoutUserLogin() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
 		//Fetching test data from test data file

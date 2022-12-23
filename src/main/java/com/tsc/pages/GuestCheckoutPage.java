@@ -214,6 +214,9 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div//*[@class='semafone__cvv-title']/div[@class='cvv__tooltip--msg']")
 	public WebElement lblUsingANewCardDialogCreditCVVTooltipMessage;
 
+	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div//*[@class='semafone__cvv-title']/div[@class='cvv__tooltip--msg']//div[@class='cvv__tooltip--close']")
+	public WebElement btnUsingANewCardDialogCreditCVVTooltipCloseButton;
+
 	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div//input[@id='creditCardCvvId']")
 	public WebElement inputUsingANewCardDialogCreditCVV;
 
@@ -857,12 +860,22 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 			//Using static wait as Sauce Lab sometimes take time to load and behaviour is in-consistent
 			this.applyStaticWait(3000);
 			if(inputCreditCardNumberInIframe.getAttribute("style").contains("display: inline")){
-				inputCreditCardNumberInIframe.clear();
+				inputCreditCardNumberInIframe.click();
+				this.applyStaticWait(this.getStaticWaitForApplication());
 				inputCreditCardNumberInIframe.sendKeys(cardNumber);
 			}
 			else{
-				inputCreditCardMaskNumberInIframe.click();
-				this.applyStaticWait(this.getStaticWaitForApplication());
+				if("Mobile".equalsIgnoreCase(System.getProperty("Device")) ){
+					inputCreditCardMaskNumberInIframe.click();
+					inputCreditCardMaskNumberInIframe.clear();
+					this.applyStaticWait(this.getStaticWaitForApplication());
+					inputCreditCardNumberInIframe.click();
+					this.applyStaticWait(this.getStaticWaitForApplication());
+				}
+				else{
+					inputCreditCardMaskNumberInIframe.click();
+					this.applyStaticWait(this.getStaticWaitForApplication());
+				}
 				inputCreditCardNumberInIframe.sendKeys(cardNumber);
 			}
 			this.getDriver().switchTo().defaultContent();
@@ -1027,7 +1040,62 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 		else{
 			reporter.reportLogFailWithScreenshot("The CreditCard Expiration Date Year Input is not displaying correctly");
 		}
+		if(this.checkCVVSectionExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblUsingANewCardDialogCreditCVVTitle);
+			lsText = lblUsingANewCardDialogCreditCVVTitle.getText();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The CreditCard CVV Title in using a new card Dialog is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The CreditCard CVV Title in using a new card Dialog is not displaying correctly");
+			}
 
+			String lsTestDevice = System.getProperty("Device").trim();
+			if(lsTestDevice.equalsIgnoreCase("Mobile")) {
+				reporter.reportLog("The tooltip action can not be automated on mobile device!");
+				/*
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblUsingANewCardDialogCreditCardNumberTitle);
+				iconUsingANewCardDialogCreditCVVTooltip.click();
+				//this.getReusableActionsInstance().javascriptScrollByVisibleElement(iconUsingANewCardDialogCreditCVVTooltip);
+				//this.getReusableActionsInstance().scrollToElement(iconUsingANewCardDialogCreditCVVTooltip);
+				reporter.reportLogWithScreenshot("Tooltip");
+				this.waitForCondition(Driver->{return this.checkCVVTooltipDisplaying();},10000);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblUsingANewCardDialogCreditCVVTooltipMessage);
+				lsText=lblUsingANewCardDialogCreditCVVTooltipMessage.getText();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The CreditCard CVV tooltip message in using a new card Dialog is displaying correctly after hovering on CVV icon");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The CreditCard CVV tooltip message in using a new card Dialog is not displaying correctly after hovering on CVV icon");
+				}
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnUsingANewCardDialogCreditCVVTooltipCloseButton);
+				this.clickElement(this.btnUsingANewCardDialogCreditCVVTooltipCloseButton);
+				this.applyStaticWait(this.getStaticWaitForApplication());
+				 */
+			}
+			else{
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(iconUsingANewCardDialogCreditCVVTooltip);
+				this.getReusableActionsInstance().scrollToElement(iconUsingANewCardDialogCreditCVVTooltip);
+				reporter.reportLogWithScreenshot("Tooltip");
+				this.waitForCondition(Driver->{return this.checkCVVTooltipDisplaying();},10000);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblUsingANewCardDialogCreditCVVTooltipMessage);
+				lsText=lblUsingANewCardDialogCreditCVVTooltipMessage.getText();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The CreditCard CVV tooltip message in using a new card Dialog is displaying correctly after hovering on CVV icon");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The CreditCard CVV tooltip message in using a new card Dialog is not displaying correctly after hovering on CVV icon");
+				}
+				this.getReusableActionsInstance().scrollToElement(lblUsingANewCardDialogCreditCVVTitle);
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditCVV);
+			if(this.getReusableActionsInstance().isElementVisible(inputUsingANewCardDialogCreditCVV)){
+				reporter.reportLogPass("The CreditCard CVV input in using a new card Dialog is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The CreditCard CVV input in using a new card Dialog is not displaying correctly");
+			}
+		}
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelUsingANewCardDialogTSCCardRadio);
 		this.clickElement(labelUsingANewCardDialogTSCCardRadio);
 		this.applyStaticWait(300);

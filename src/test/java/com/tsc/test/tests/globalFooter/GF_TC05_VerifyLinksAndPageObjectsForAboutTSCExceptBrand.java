@@ -311,12 +311,16 @@ public class GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand extends Bas
         }
 
         //Rogers Copy Rights
-        if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().RogersMedia)){
-            reporter.reportLogPass("The Copyright Section of Rogers Media is displayed");
+        String lsTestDevice = System.getProperty("Device").trim();
+        if(!lsTestDevice.equalsIgnoreCase("Mobile")) {
+            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().RogersMedia)){
+                reporter.reportLogPass("The Copyright Section of Rogers Media is displayed");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The Copyright Section of Rogers Media is not displayed");
+            }
         }
-        else{
-            reporter.reportLogFailWithScreenshot("The Copyright Section of Rogers Media is not displayed");
-        }
+
         if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().AllPrice)){
             reporter.reportLogPass("The Copyright Section of All Price in Canadian Dollars is displayed");
         }

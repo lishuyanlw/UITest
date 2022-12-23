@@ -135,7 +135,9 @@ public class CP_TC09_VerifyPaymentMethod_Add_Remove_PaymentType_And_PayPal exten
             getRegularCheckoutThreadLocal().openAddOrEditAddressDialog(getDriver().findElement(getRegularCheckoutThreadLocal().byAddOrChangeShippingAddressDialogEditButton));
             getRegularCheckoutThreadLocal().editAndVerifyAddedCreditCardInPaymentMethodForUser(cardType,"5","2039",(JSONObject) creditCardData.get(cardType),true);
 
-            //Verify Pay Pal Option
+            getRegularCheckoutThreadLocal().removeAllPaymentMethodsForUser();
+
+            //Verify PayPal Option
             reporter.reportLog("Verify PayPal option");
             //getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
             getRegularCheckoutThreadLocal().verifyPayPalFunctionality();
