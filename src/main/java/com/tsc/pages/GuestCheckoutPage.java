@@ -865,11 +865,12 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 				inputCreditCardNumberInIframe.sendKeys(cardNumber);
 			}
 			else{
-				if("Mobile".equalsIgnoreCase(System.getProperty("Device")) ){
+				if("Mobile".equalsIgnoreCase(System.getProperty("Device"))&&
+						System.getProperty("chromeMobileDevice").length()>0){
 					inputCreditCardMaskNumberInIframe.click();
-//					inputCreditCardMaskNumberInIframe.clear();
-//					this.applyStaticWait(this.getStaticWaitForApplication());
-//					inputCreditCardNumberInIframe.click();
+					inputCreditCardMaskNumberInIframe.clear();
+					this.applyStaticWait(this.getStaticWaitForApplication());
+					inputCreditCardNumberInIframe.click();
 					this.applyStaticWait(this.getStaticWaitForApplication());
 				}
 				else{
