@@ -5076,7 +5076,7 @@ public class RegularCheckoutPage extends BasePage {
 		this.applyStaticWait(300);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderSummaryPromoteCodeApply);
-		btnOrderSummaryPromoteCodeApply.click();
+		this.clickElement(btnOrderSummaryPromoteCodeApply);
 
 		return this.waitForCondition(Driver->{return lblOrderSummaryPromoteCodeErrorMessage.isDisplayed();},15000);
 	}
