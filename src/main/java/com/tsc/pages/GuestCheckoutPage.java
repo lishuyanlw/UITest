@@ -867,9 +867,9 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 			else{
 				if("Mobile".equalsIgnoreCase(System.getProperty("Device")) ){
 					inputCreditCardMaskNumberInIframe.click();
-					inputCreditCardMaskNumberInIframe.clear();
-					this.applyStaticWait(this.getStaticWaitForApplication());
-					inputCreditCardNumberInIframe.click();
+//					inputCreditCardMaskNumberInIframe.clear();
+//					this.applyStaticWait(this.getStaticWaitForApplication());
+//					inputCreditCardNumberInIframe.click();
 					this.applyStaticWait(this.getStaticWaitForApplication());
 				}
 				else{
