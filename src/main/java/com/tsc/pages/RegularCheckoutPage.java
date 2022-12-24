@@ -2165,6 +2165,7 @@ public class RegularCheckoutPage extends BasePage {
 				inputCreditCardNumberInIframe.sendKeys(cardNumber);
 			}
 			this.getDriver().switchTo().defaultContent();
+			this.applyStaticWait(5*this.getStaticWaitForApplication());
 
 			//Verify display of icon just after entering CC number
 			if(!creditCardType.equalsIgnoreCase("expired") && validCreditCard){
@@ -2230,7 +2231,7 @@ public class RegularCheckoutPage extends BasePage {
 		//Applying static wait as on repeated use, stale element exception is coming for browser
 		this.applyStaticWait(5*this.getStaticWaitForApplication());
 		//this.waitForCondition(Driver->{return !lblInputCreditCardNumberType.getAttribute("class").trim().isEmpty();},15000);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblInputCreditCardNumberType);
+//		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblInputCreditCardNumberType);
 		String lsCreditCardClass=lblInputCreditCardNumberType.getAttribute("class").trim();
 		if(lsCreditCardClass.contains(" ")){
 			String[] lstCreditCardClass=lsCreditCardClass.split(" ");
