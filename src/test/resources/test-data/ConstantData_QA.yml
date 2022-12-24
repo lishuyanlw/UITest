@@ -1,6 +1,6 @@
 # API USER TOKEN INFO
 apiUserSessionParams:
-  lbl_username: testautomation2@rogers.com
+  lbl_username: testautomation3@rogers.com
   lbl_password: qa1234
   lbl_grantType: password
   lbl_apiKey: A9607F64-D061-4279-8D00-F8469EA38DD1
@@ -98,8 +98,10 @@ homePage:
 searchResultPage:
   lbl_prp_partial_url: "/pages/productresults?"
   lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","Joan Rivers","100501" ]
-  lst_SearchKeyword_Bugs: ["iPads & Tablets","desk  ","https://qa-tsc.tsc.ca/pages/productresults?&searchterm=desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
-  lbl_ProductNumberToComparePRPAndPDPContent: "Brian Bailey Wedge Dress"
+  #lst_SearchKeyword_Bugs: ["iPads & Tablets","desk  ","https://qa-tsc.tsc.ca/pages/productresults?&searchterm=desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
+  lst_SearchKeyword_Bugs: ["Gev Pall Sil Dauphin Apatite Ring Five Stone 9","desk  ","https://qa-tsc.tsc.ca/pages/productresults?&searchterm=desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
+  #lbl_ProductNumberToComparePRPAndPDPContent: "Brian Bailey Wedge Dress"
+  lbl_ProductNumberToComparePRPAndPDPContent: "Sofia B. 10K Gold Gemstone and Diamond Halo Heart Ring"
   lst_SearchKeyword_DropDown: [[ "dress","Categories","1" ]]
   lst_APISearchingKeyword: ["dress","jegging","boots","Beauty"]
   lst_BackUpSearchingKeyword: ["furniture","rings","gym"]

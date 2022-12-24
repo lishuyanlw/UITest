@@ -2801,7 +2801,7 @@ public class ProductResultsPage extends BasePage{
 
 		//If all displayed size or color are disabled
 		if(!checkProductSizeOptionEnabledItemAvailableWithMouseHover(itemContainer)||!checkProductColorOptionEnabledItemAvailableWithMouseHover(itemContainer)) {
-			reporter.reportLog("No enabled size/color opion available");
+			reporter.reportLog("No enabled size/color option available");
 			return;
 		}
 
