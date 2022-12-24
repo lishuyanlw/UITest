@@ -83,8 +83,8 @@ public class CP_TC09_VerifyPaymentMethod_Add_Remove_PaymentType_And_PayPal exten
             getRegularCheckoutThreadLocal().verifyUsingANewCardDialogContents();
             getRegularCheckoutThreadLocal().closeAddOrChangePaymentMethodDialog(true);
 
-            BasePage basePage=new BasePage(this.getDriver());
-            if (basePage.checkIfDeviceTypeNotDesktop(System.getProperty("Device"), System.getProperty("chromeMobileDevice"))) {
+            String lsDevice=System.getProperty("Device");
+            if(!lsDevice.equalsIgnoreCase("Desktop")) {
                 reporter.reportLog("There are the issue to add credit card number for mobile/tablet devices");
                 return;
             }
