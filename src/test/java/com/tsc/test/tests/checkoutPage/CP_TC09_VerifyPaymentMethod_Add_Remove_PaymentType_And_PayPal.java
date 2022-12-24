@@ -82,6 +82,13 @@ public class CP_TC09_VerifyPaymentMethod_Add_Remove_PaymentType_And_PayPal exten
             reporter.reportLog("1 > Verify required message for all fields on Add Payment Method Dialog");
             getRegularCheckoutThreadLocal().verifyUsingANewCardDialogContents();
             getRegularCheckoutThreadLocal().closeAddOrChangePaymentMethodDialog(true);
+
+            BasePage basePage=new BasePage(this.getDriver());
+            if (basePage.checkIfDeviceTypeNotDesktop(System.getProperty("Device"), System.getProperty("chromeMobileDevice"))) {
+                reporter.reportLog("There are the issue to add credit card number for mobile/tablet devices");
+                return;
+            }
+
             reporter.reportLog("2 > Verify Mandatory Error Message");
             getRegularCheckoutThreadLocal().verifyErrorMessageOnAddPaymentMethodDialog(addNewCardErrorMessage.get(0));
             if(getRegularCheckoutThreadLocal().checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
