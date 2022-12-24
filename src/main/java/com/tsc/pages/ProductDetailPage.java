@@ -3582,6 +3582,10 @@ public class ProductDetailPage extends BasePage {
 	 * To verify zooming image action
 	 */
 	public void verifyZoomingImageAction(){
+		if (this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"), System.getProperty("chromeMobileDevice"))) {
+			reporter.reportLog("Simulator is not supporting zoom out by clicking image");
+			return;
+		}
 		WebElement item=lstThumbnailImageButtonWithoutVideoList.get(0);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		this.clickWebElementUsingJS(item);

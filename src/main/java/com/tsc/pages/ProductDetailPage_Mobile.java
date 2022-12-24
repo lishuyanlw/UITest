@@ -133,39 +133,4 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         return map;
     }
 
-    @Override
-    public void verifyZoomingImageAction(){
-        if(System.getProperty("Browser").contains("ios") || System.getProperty("Browser").contains("android")) {
-            reporter.reportLog("Simulator is not supporting zoom out by clicking image");
-            return;
-        }
-
-        WebElement item=lstThumbnailImageButtonWithoutVideoList.get(0);
-        this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-        item.click();
-        this.applyStaticWait(2*this.getStaticWaitForApplication());
-
-        this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCurrentZoomImage);
-        lnkCurrentZoomImage.click();
-        this.applyStaticWait(2*this.getStaticWaitForApplication());
-        if(checkImageZoomingStatus()){
-            reporter.reportLogPass("Zooming out action is working");
-        }
-        else{
-            reporter.reportLogFailWithScreenshot("Zooming out action is not working");
-        }
-
-        this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
-
-        this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCurrentZoomImage);
-        lnkCurrentZoomImage.click();
-        this.applyStaticWait(2*this.getStaticWaitForApplication());
-        if(!checkImageZoomingStatus()){
-            reporter.reportLogPass("Zooming in action is working");
-        }
-        else{
-            reporter.reportLogFailWithScreenshot("Zooming in action is not working");
-        }
-    }
-
 }
