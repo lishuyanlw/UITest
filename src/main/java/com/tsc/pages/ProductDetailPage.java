@@ -2594,7 +2594,6 @@ public class ProductDetailPage extends BasePage {
 //					break;
 //			}
 //		}
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblSoldOut),"The Soldout message is displaying correctly","The Soldout message is not displaying correctly");
 		reporter.softAssert(this.getElementText(this.lblSoldOut).equalsIgnoreCase("Out of Stock"),"The Soldout message is displaying correctly","The Soldout message is not displaying correctly");
 		reporter.softAssert(this.checkOutOfStockForQuantityDropdown(),"The Quantity Dropdown for Soldout is displaying correctly","The Quantity Dropdown for Soldout is not displaying correctly");
 		reporter.softAssert(!this.judgeAddToBagButtonAvailable(),"The Out of Stock button is displaying correctly","The Out of Stock button is not displaying correctly");
