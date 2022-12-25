@@ -1051,8 +1051,8 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 			}
 
 			String lsTestDevice = System.getProperty("Device").trim();
-			if(lsTestDevice.equalsIgnoreCase("Mobile")) {
-				reporter.reportLog("The tooltip action can not be automated on mobile device!");
+			if(!lsTestDevice.equalsIgnoreCase("Desktop")) {
+				reporter.reportLog("The tooltip action can not be automated on mobile/tablet devices!");
 				/*
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblUsingANewCardDialogCreditCardNumberTitle);
 				iconUsingANewCardDialogCreditCVVTooltip.click();
