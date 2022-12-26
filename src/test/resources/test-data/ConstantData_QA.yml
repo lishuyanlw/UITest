@@ -1,6 +1,6 @@
 # API USER TOKEN INFO
 apiUserSessionParams:
-  lbl_username: testautomation2@rogers.com
+  lbl_username: testautomation3@rogers.com
   lbl_password: qa1234
   lbl_grantType: password
   lbl_apiKey: A9607F64-D061-4279-8D00-F8469EA38DD1
@@ -115,21 +115,21 @@ searchResultPage:
   lst_SearchOption:
     - filterType: Product
       filterOption:
-        - ["Shop by brand","Joan Rivers"]
-        - ["Shop by colour","Pink"]
+        - ["Shop by brand","Pink Tartan"]
+        - ["Shop by colour","Black"]
     - filterType: Price
       filterOption:
         - ["Price","Under $100","Under"]
     - filterType: CombinatedAction
       filterOption:
         - ["Shop by brand","N Natori"]
-        - ["Reviews","3 Stars"]
+        - ["Reviews","4 Stars"]
         - ["Price","Under $100"]
     - filterType: SequentialAction
       filterOption:
-        - ["Shop by brand","Joan Rivers"]
+        - ["Shop by brand","N Natori"]
         - ["Price","Under $100"]
-        - ["Shop by colour","Green"]
+        - ["Shop by colour","Black"]
     - filterType: FilterBugs
       filterOption:
         - ["Shop by brand","Pajar"]
