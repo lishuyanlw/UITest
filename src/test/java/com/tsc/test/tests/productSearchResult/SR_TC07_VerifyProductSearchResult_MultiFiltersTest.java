@@ -15,7 +15,7 @@ public class SR_TC07_VerifyProductSearchResult_MultiFiltersTest extends BaseTest
 	 * CER-226
 	 * Bug-19685 - Reviews filter doesn't display stars in filter - covered in selectFilterItemInLeftPanel() function
 	 */
-	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile","FixedTestData"})
+	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
 	public void SR_TC07_VerifyProductSearchResult_MultiFiltersTest() throws IOException {
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 

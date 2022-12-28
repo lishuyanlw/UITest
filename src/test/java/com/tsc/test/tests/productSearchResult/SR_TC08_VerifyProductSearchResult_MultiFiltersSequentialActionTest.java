@@ -15,7 +15,7 @@ public class SR_TC08_VerifyProductSearchResult_MultiFiltersSequentialActionTest 
 	 * CER-228
 	 * CER-230
 	 */
-	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile","FixedTestData"})
+	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
 	public void SR_TC08_VerifyProductSearchResult_MultiFiltersSequentialActionTest() throws IOException {
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 	

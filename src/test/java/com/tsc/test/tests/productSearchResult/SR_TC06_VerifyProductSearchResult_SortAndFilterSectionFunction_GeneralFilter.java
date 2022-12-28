@@ -23,7 +23,7 @@ public class SR_TC06_VerifyProductSearchResult_SortAndFilterSectionFunction_Gene
 	 * Bug 19557: [QA Defect - P3] when selecting the checkbox options in the left nav, the dimension IDs in the URL should use pipe character not... - covered in verifyUrlPatternAfterSelectFilter function
 	 * Bug 19745: [Release Defect - P3] the filter menu in PRP iOS is covered by a panel and can't be closed /cancelled
 	 */
-	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile","FixedTestData"})
+	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
 	public void SR_TC06_VerifyProductSearchResult_SortAndFilterSectionFunction_GeneralFilter() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
