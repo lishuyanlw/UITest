@@ -4021,7 +4021,7 @@ public class ProductDetailPage extends BasePage {
 			if(Integer.valueOf(reviewPopUpReviewSubmittedTime)>=Integer.valueOf(reviewDataByUser.get("reviewSubmittedTime")))
 				reporter.reportLogPass("Review Submitted Time is same as expected on review pop-up window");
 			else
-				reporter.reportLogFailWithScreenshot("Review Submitted Time is not same as expected on window");
+				reporter.reportLogWithScreenshot("Review Submitted Time is not same as expected on window");
 
 			reporter.reportLog("Verifying Flag Image is a link on review image pop-up");
 			this.getReusableActionsInstance().scrollToElement(this.lnlFlagImageOnPopUpWindow);
