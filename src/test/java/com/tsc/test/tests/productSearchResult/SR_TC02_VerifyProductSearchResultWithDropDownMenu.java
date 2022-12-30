@@ -36,6 +36,7 @@ public class SR_TC02_VerifyProductSearchResultWithDropDownMenu extends BaseTest{
 		else {			
 			getProductResultsPageThreadLocal().selectSearchResultListInDropdownMenu(lsKeywordDropdownList.get(i).get(0),lsKeywordDropdownList.get(i).get(1),"");
 		}
+
 				
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 

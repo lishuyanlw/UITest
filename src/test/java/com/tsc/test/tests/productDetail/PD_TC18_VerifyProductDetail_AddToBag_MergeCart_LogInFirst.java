@@ -25,6 +25,7 @@ public class PD_TC18_VerifyProductDetail_AddToBag_MergeCart_LogInFirst extends B
 		reporter.reportLog("ProductDetail Page");
 
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
+		//List<String> lstKeywordList=TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
 		String lsUserName=TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword=TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 

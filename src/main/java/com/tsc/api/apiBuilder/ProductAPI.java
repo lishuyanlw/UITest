@@ -417,10 +417,12 @@ public class ProductAPI extends ApiClient {
             }
             else {
                 if(videoCount!=-1){
-                    flag = (videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount) && data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount && !data.getPriceIsLabel().isEmpty() && data.getProductReviewRating() > 0 &&data.getProductReviewCount()>0&& !lsNowPrice.equalsIgnoreCase(lsWasPrice) && data.isEnabledAddToCart();
+                    //flag = (videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount) && data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount && !data.getPriceIsLabel().isEmpty() && data.getProductReviewRating() > 0 &&data.getProductReviewCount()>0&& !lsNowPrice.equalsIgnoreCase(lsWasPrice) && data.isEnabledAddToCart();
+                    flag = (videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount) && data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount && data.getProductReviewRating() > 0 &&data.getProductReviewCount()>0&& !lsNowPrice.equalsIgnoreCase(lsWasPrice) && data.isEnabledAddToCart();
                 }
                 else{
-                    flag = data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount && !data.getPriceIsLabel().isEmpty() && data.getProductReviewRating() > 0 &&data.getProductReviewCount()>0&& !lsNowPrice.equalsIgnoreCase(lsWasPrice) && data.isEnabledAddToCart();
+                    //flag = data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount && !data.getPriceIsLabel().isEmpty() && data.getProductReviewRating() > 0 &&data.getProductReviewCount()>0&& !lsNowPrice.equalsIgnoreCase(lsWasPrice) && data.isEnabledAddToCart();
+                    flag = data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount && data.getProductReviewRating() > 0 &&data.getProductReviewCount()>0&& !lsNowPrice.equalsIgnoreCase(lsWasPrice) && data.isEnabledAddToCart();
                 }
             }
             if(flag) {

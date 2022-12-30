@@ -49,5 +49,11 @@ public class GuestCheckoutPage_Mobile extends GuestCheckoutPage {
 		}
 	}
 
+	@Override
+	public void verifyPayPalFunctionality(){
+		reporter.reportLog("Unable to switch frame on mobile device due to automation tools issue.");
+
+	}
+
 
 }

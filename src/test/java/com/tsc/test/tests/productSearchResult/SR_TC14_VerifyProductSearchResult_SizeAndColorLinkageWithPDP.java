@@ -39,24 +39,26 @@ public class SR_TC14_VerifyProductSearchResult_SizeAndColorLinkageWithPDP extend
 
 		reporter.reportLog("verifySearchResultMessageOnPage");
 		//Verification of Bug-19544, Bug-19651 Bug-19672
-		reporter.reportLog(lst_SearchKeyword.get(1));
+		reporter.reportLog("Search keyword: "+lst_SearchKeyword.get(1));
 		getProductResultsPageThreadLocal().getSearchResultLoad(lst_SearchKeyword.get(1),true);
 		getProductResultsPageThreadLocal().verifySearchResultMessageOnPage(lst_SearchKeyword.get(1));
 
-		reporter.reportLog("verifyInfoLinkageWithPDPWithoutSwatch");
-		//Verification of Bug-19703
-		//Searching keyword - iPads & Tablets on Home Page to load data on PRP page on QA
-		getProductResultsPageThreadLocal().getSearchResultLoad(lst_SearchKeyword.get(0),true);
-		//Fetching count of products loaded on screen
-		productList=getProductResultsPageThreadLocal().getProductList();
-		for(int loop=0;loop<productList.size();loop++) {
-			if(getProductResultsPageThreadLocal().findItemWithAvailableSizeAndColorDropDown(productList.get(loop))){
-				//Selecting the available size and color for item from dropdown
-				getProductResultsPageThreadLocal().verifyInfoLinkageWithPDPWithoutSwatch(productList.get(loop),loop);
-				break;
+		BasePage basePage=new BasePage(this.getDriver());
+		if (!basePage.checkIfDeviceTypeNotDesktop(System.getProperty("Device"), System.getProperty("chromeMobileDevice"))) {
+			reporter.reportLog("verifyInfoLinkageWithPDPWithoutSwatch");
+			//Verification of Bug-19703
+			//Searching keyword - iPads & Tablets on Home Page to load data on PRP page on QA
+			getProductResultsPageThreadLocal().getSearchResultLoad(lst_SearchKeyword.get(0),true);
+			//Fetching count of products loaded on screen
+			productList=getProductResultsPageThreadLocal().getProductList();
+			for(int loop=0;loop<productList.size();loop++) {
+				if(getProductResultsPageThreadLocal().findItemWithAvailableSizeAndColorDropDown(productList.get(loop))){
+					//Selecting the available size and color for item from dropdown
+					getProductResultsPageThreadLocal().verifyInfoLinkageWithPDPWithoutSwatch(productList.get(loop),loop);
+					break;
+				}
 			}
 		}
-		
 	}
 }
 

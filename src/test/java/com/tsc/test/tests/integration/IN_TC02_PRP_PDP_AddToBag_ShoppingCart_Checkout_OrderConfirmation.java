@@ -100,7 +100,7 @@ public class IN_TC02_PRP_PDP_AddToBag_ShoppingCart_Checkout_OrderConfirmation ex
                 getRegularCheckoutThreadLocal().verifyProductListLinkageBetweenShoppingCartPageAndCheckoutPage(shoppingCartItem,checkoutItem);
             }
             else{
-                reporter.reportLogFail("");
+                reporter.reportLogFail("Unable to find product: '"+lsShoppingCartText+"' from ShoppingCart page in Checkout page");
             }
         }
 

@@ -1,7 +1,10 @@
 package com.tsc.test.tests.productDetail;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
@@ -24,10 +27,16 @@ public class PD_TC16_VerifyProductDetail_WriteReview extends BaseTest{
 
 		List<String> lstTitle=TestDataHandler.constantData.getSearchResultPage().getLst_WriteReviewSubmitMessage();
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
+		//List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_BackUpSearchingKeyword();
 
+		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
+		outputDataCriteria.put("video", "-1");
+		outputDataCriteria.put("style", "1");
+		outputDataCriteria.put("size", "1");
+		outputDataCriteria.put("quantity", "2");
 		reporter.reportLog("Switch to ProductDetail page");
 		String lsProductNumber,lsUrl;
-		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithoutCheckingSoldOutCriteria",null)) {
+		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithoutCheckingSoldOutCriteria",outputDataCriteria)) {
 			reporter.reportLog("Verify URL");
 			lsProductNumber=getProductDetailPageThreadLocal().selectedProduct.productNumber;
 			lsUrl=basePage.URL();

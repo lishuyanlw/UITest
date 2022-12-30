@@ -141,6 +141,7 @@ public class GCP_TC04_Verify_GuestCheckout_OrderConfirmation_CreditCardType_Payp
 				getGuestCheckoutThreadLocal().verifyInputCreditCardType(mapAddedPayment.get("cardType").toString());
 				mapAddedPayment=getGuestCheckoutThreadLocal().addNewCreditOrEditExistingCard("visa");
 				getGuestCheckoutThreadLocal().verifyInputCreditCardType(mapAddedPayment.get("cardType").toString());
+
 			}
 
 			//CER-907 - Checkout - Guest Checkout (Paypal) - Verify PayPal button

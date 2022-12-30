@@ -560,6 +560,15 @@ public class ConstantData {
         private String lbl_prp_partial_url;
         private List<String> lst_ClearanceKeyword;
         private List<String> lst_ShoppingCartSearchKeyword;
+        private List<String> lst_BackUpSearchingKeyword;
+
+        public List<String> getLst_BackUpSearchingKeyword() {
+            return lst_BackUpSearchingKeyword;
+        }
+
+        public void setLst_BackUpSearchingKeyword(List<String> lst_BackUpSearchingKeyword) {
+            this.lst_BackUpSearchingKeyword = lst_BackUpSearchingKeyword;
+        }
 
         public List<String> getLst_ShoppingCartSearchKeyword() {            return lst_ShoppingCartSearchKeyword;        }
 

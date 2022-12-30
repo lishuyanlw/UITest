@@ -26,7 +26,7 @@ public class PD_TC07_VerifyProductDetail_ProductStyle extends BaseTest{
 		reporter.reportLog("ProductDetail Page");
 
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
-
+		//List<String> lstKeywordList=TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
 		String lsProductNumber,lsUrl;
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		outputDataCriteria.put("video", "0");

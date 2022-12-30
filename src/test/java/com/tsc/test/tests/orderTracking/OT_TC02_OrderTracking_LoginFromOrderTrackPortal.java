@@ -1,5 +1,7 @@
 package com.tsc.test.tests.orderTracking;
 
+import com.tsc.api.pojo.GetGivenOrderResponse;
+import com.tsc.api.pojo.PlaceOrderResponse;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.base.BasePage;
@@ -30,9 +32,19 @@ public class OT_TC02_OrderTracking_LoginFromOrderTrackPortal extends BaseTest {
         String accessToken = apiUserSessionData.get("access_token").toString();
         String customerEDP = apiUserSessionData.get("customerEDP").toString();
 
-        List<Map<String,Object>> dataList = getOrderTrackingThreadLocal().getPlacedOrderListForUser(2,null,customerEDP,accessToken,null,null,null,null);
-        Map<String,Object> dataMapItem=dataList.get(0);
-        String lsOrderNumberFromApi= (String) dataMapItem.get("orderNumber");
+        //Adding TSC Credit Card to user for test
+        getShoppingCartThreadLocal().addTSCCreditCardForUser(null,customerEDP,accessToken);
+
+        //Adding place order
+        List<Map<String,String>> itemsToBeAdded = TestDataHandler.constantData.getCheckOut().getLstOrderDetailItems();
+        String lsOrderNumberFromApi;
+        PlaceOrderResponse placeOrderResponse = null;
+        GetGivenOrderResponse getGivenOrderResponse = getMyAccountPageThreadLocal().getExistingOrderInEditableMode(2,customerEDP,accessToken);
+        if(getGivenOrderResponse==null){
+            placeOrderResponse = getMyAccountPageThreadLocal().placeOrderForUser(Integer.parseInt(customerEDP),accessToken,itemsToBeAdded,2,"all",true,0);
+            lsOrderNumberFromApi = placeOrderResponse.getOrderedCart().getOrderSummary().getOrderNo();
+        }else
+            lsOrderNumberFromApi = getGivenOrderResponse.getOrderSummary().getOrderNo();
 
         List<List<String>> lstNameAndLinks=TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
         getOrderTrackingThreadLocal().goToTrackOrderPortalThroughClickingTrackYourOrderItemOnGlobalFooter( getGlobalFooterPageThreadLocal() ,lstNameAndLinks);
