@@ -118,6 +118,7 @@ public class MA_TC15_YourAddresses_BillingAddress extends BaseTest {
         reporter.reportLog("lsFirstNameAdd: "+lsFirstNameAdd);
 
         int selectedIndex= Integer.parseInt(mapAdd.get("selectedIndex"));
+
         int addressAmountAfterAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();
         if((addressAmountAfterAdding-addressAmountBeforeAdding)>=1){
             reporter.reportLogPass("Adding a new address successfully");
@@ -149,6 +150,7 @@ public class MA_TC15_YourAddresses_BillingAddress extends BaseTest {
         }
         lsFirstNameAdd=mapAdd.get("firstName").toString();
         reporter.reportLog("lsFirstNameAdd: "+lsFirstNameAdd);
+
         addressAmountAfterAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();
         if((addressAmountAfterAdding-addressAmountBeforeAdding)>=2){
             reporter.reportLogPass("Adding a new address successfully");
