@@ -561,6 +561,15 @@ public class ConstantData {
         private List<String> lst_ClearanceKeyword;
         private List<String> lst_ShoppingCartSearchKeyword;
         private List<String> lst_BackUpSearchingKeyword;
+        private List<String> lst_AdvancedOrderKeyword;
+
+        public List<String> getLst_AdvancedOrderKeyword() {
+            return lst_AdvancedOrderKeyword;
+        }
+
+        public void setLst_AdvancedOrderKeyword(List<String> lst_AdvancedOrderKeyword) {
+            this.lst_AdvancedOrderKeyword = lst_AdvancedOrderKeyword;
+        }
 
         public List<String> getLst_BackUpSearchingKeyword() {
             return lst_BackUpSearchingKeyword;
