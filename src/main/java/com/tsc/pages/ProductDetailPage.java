@@ -2429,6 +2429,11 @@ public class ProductDetailPage extends BasePage {
 		return this.checkChildElementExistingByAttribute(cntProductDetailsBrandAndReviewContainer, "id", "divBrandName");
 	}
 
+	public boolean checkProductReviewExisting() {
+		String lsText=this.getElementInnerText(this.lblProductReview);
+		return !lsText.contains("No Reviews");
+	}
+
 	public boolean checkProductEasyPayExisting() {
 		return this.checkChildElementExistingByAttribute(this.cntRightContainer, "id", "divEasyPayment");
 	}
@@ -2448,10 +2453,14 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	public void verifyProductReview() {
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.productReviewSection),"The product review section is displaying correctly","The product review section is not displaying correctly");
-		reporter.softAssert(this.lstProductReviewStar.size()>0,"The product review star count is greater than 0","The product review star count is not greater than 0");
-		reporter.softAssert(!this.getElementText(this.lblProductReview).isEmpty(),"The product review text is not empty","The product review text is empty");
-
+		if(this.checkProductReviewExisting()){
+			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.productReviewSection),"The product review section is displaying correctly","The product review section is not displaying correctly");
+			reporter.softAssert(this.lstProductReviewStar.size()>0,"The product review star count is greater than 0","The product review star count is not greater than 0");
+			reporter.softAssert(!this.getElementText(this.lblProductReview).isEmpty(),"The product review text is not empty","The product review text is empty");
+		}
+		else{
+			reporter.reportLog("No review section existing.");
+		}
 	}
 
 	public void verifyProductPriceAndShipping() {

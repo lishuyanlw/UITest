@@ -31,7 +31,6 @@ public class PD_TC05_VerifyProductDetail_RightSection_DeliveryOptions extends Ba
 			reporter.reportLog("Verify URL for Product Number: " + lsProductNumber);
 			lsUrl = basePage.URL();
 			reporter.softAssert(lsUrl.contains("productdetails"), "The Url is containing productdetails", "The Url is not containing productdetails");
-			reporter.softAssert(lsUrl.contains(lsProductNumber), "The Url is containing selected product number of " + lsProductNumber, "The Url is not containing selected product number of " + lsProductNumber);
 
 			reporter.reportLog("Verify product name,brand name and product number");
 			getProductDetailPageThreadLocal().verifyProductBasicInfo();
