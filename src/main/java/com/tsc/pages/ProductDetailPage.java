@@ -1750,6 +1750,47 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	/**
+	 * To get product number
+	 * @return - String
+	 */
+	public String getProductNumber(){
+		return this.getElementInnerText(this.lblProductNumber);
+	}
+
+	/**
+	 * Method to verify product quantity dropdown for auto delivery
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void verifyProductQuantityDropdownForAutoDelivery() {
+		String lsStyle,lsMsg;
+		reporter.softAssert(!this.getElementText(this.lblQuantityStatic).isEmpty(),"The product quantity label message is not empty","The product quantity label message is empty");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.selectQuantityOption),"The product Quantity option is displaying correctly","The product Quantity option is not displaying correctly");
+		int loopSize;
+
+		Select selectStyle= new Select(this.selectProductStyle);
+		List<String> dropDownText = new ArrayList<>();
+		for(WebElement element:this.lstDropdownProductStyle){
+			dropDownText.add(element.getText());
+		}
+
+		loopSize=dropDownText.size();
+		Set<String> productNumberSet = new HashSet<>();
+		for(int i=0;i<loopSize;i++){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectProductStyle);
+			selectStyle.selectByVisibleText(dropDownText.get(i));
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			productNumberSet.add(this.getProductNumber());
+		}
+		if(productNumberSet.size()==loopSize){
+			reporter.reportLogPass("The product number is changing correctly with different auto delivery option");
+		}
+		else{
+			reporter.reportLogFail("The product number is not changing correctly with different auto delivery option");
+		}
+	}
+
+	/**
 	 * Method to verify product Add to Bag button
 	 * @return void
 	 * @author Wei.Li

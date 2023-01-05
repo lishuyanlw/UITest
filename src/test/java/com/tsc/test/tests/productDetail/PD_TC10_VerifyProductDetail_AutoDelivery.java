@@ -51,7 +51,7 @@ public class PD_TC10_VerifyProductDetail_AutoDelivery extends BaseTest{
 			getProductDetailPageThreadLocal().verifyProductAddToBagButton();
 
 			reporter.reportLog("Verify product quantity");
-			getProductDetailPageThreadLocal().verifyProductQuantityDropdown(Integer.parseInt(lsQuantityNumberToShowLeftItemInfo));
+			getProductDetailPageThreadLocal().verifyProductQuantityDropdownForAutoDelivery();
 
 		}
 		else {

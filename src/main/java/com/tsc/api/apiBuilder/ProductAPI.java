@@ -233,7 +233,7 @@ public class ProductAPI extends ApiClient {
 
                 product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {});
                 if(product.getProducts()==null) {
-                    if(product.getRedirectUrl()!=null) {
+                    if(product.getRedirectUrl()!=null&&!product.getRedirectUrl().isEmpty()) {
                         dimensionNumber = getDimensionNumberFromURL(product.getRedirectUrl());
                         bBrand=false;
                         break;
@@ -347,16 +347,22 @@ public class ProductAPI extends ApiClient {
      * @return - String - Dimension Number
      */
     public String getDimensionNumberFromURL(String url){
-        String lsDimension;
+        String lsDimension="";
         String lsVersion= super.getApiPropertyData().get("test_apiVersion3");
 
         if(lsVersion.equalsIgnoreCase("v2")) {
             lsDimension=url.split(":")[1];
         }
         else {
-            lsDimension=url.split("=")[1];
-            if(lsDimension.contains(":")) {
+            if(url.contains(":")){
                 lsDimension=url.split(":")[1];
+            }
+
+            if(url.contains("=")){
+                lsDimension=url.split("=")[1];
+                if(lsDimension.contains(":")) {
+                    lsDimension=lsDimension.split(":")[1];
+                }
             }
         }
         return lsDimension;
