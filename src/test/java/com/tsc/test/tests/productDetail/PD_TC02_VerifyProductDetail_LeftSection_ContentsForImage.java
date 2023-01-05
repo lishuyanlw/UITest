@@ -33,7 +33,7 @@ public class PD_TC02_VerifyProductDetail_LeftSection_ContentsForImage extends Ba
 		String lsProductNumber,lsUrl;
 
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
-		outputDataCriteria.put("video", "0");
+		outputDataCriteria.put("video", "-1");
 		outputDataCriteria.put("style", "6");
 		outputDataCriteria.put("size", "2");
 		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria",outputDataCriteria)) {

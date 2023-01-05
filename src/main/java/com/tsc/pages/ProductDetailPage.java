@@ -1036,15 +1036,22 @@ public class ProductDetailPage extends BasePage {
 		}
 
 		int imageCount=this.lstThumbnailImageList.size();
-		String lsLastImageSrcBefore=this.lstThumbnailImageList.get(0).findElement(By.xpath(".//img")).getAttribute("src");
+		reporter.reportLog(imageCount+"");
+		String lsLastImageSrcBefore=this.lstThumbnailImageList.get(imageCount-1).findElement(By.xpath(".//img")).getAttribute("src");
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailNext);
 		this.clickWebElementUsingJS(this.btnThumbnailNext);
+		this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
+		this.clickWebElementUsingJS(this.btnThumbnailNext);
+		this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
 		//this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailNext);
 		//Keep it to wait for clicking action result
-		this.getReusableActionsInstance().staticWait(300);
-		String lsLastIamgeSrcAfter=this.lstThumbnailImageList.get(0).findElement(By.xpath(".//img")).getAttribute("src");
 
-		reporter.softAssert(!lsLastImageSrcBefore.equalsIgnoreCase(lsLastIamgeSrcAfter), "The Next button clicking is working", "The Next button clicking is not working");
+		imageCount=this.lstThumbnailImageList.size();
+		String lsLastImageSrcAfter=this.lstThumbnailImageList.get(imageCount-1).findElement(By.xpath(".//img")).getAttribute("src");
+		reporter.reportLog(lsLastImageSrcBefore);
+		reporter.reportLog(imageCount+"");
+		reporter.reportLog(lsLastImageSrcAfter);
+		reporter.softAssert(!lsLastImageSrcBefore.equalsIgnoreCase(lsLastImageSrcAfter), "The Next button clicking is working", "The Next button clicking is not working");
 	}
 
 	/**
