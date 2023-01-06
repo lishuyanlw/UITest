@@ -102,7 +102,7 @@ searchResultPage:
   lst_SearchKeyword_Bugs: ["Gev Pall Sil Dauphin Apatite Ring Five Stone 9","desk  ","https://qa-tsc.tsc.ca/pages/productresults?&searchterm=desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
   #lbl_ProductNumberToComparePRPAndPDPContent: "Brian Bailey Wedge Dress"
   lbl_ProductNumberToComparePRPAndPDPContent: "Sofia B. 10K Gold Gemstone and Diamond Halo Heart Ring"
-  lst_SearchKeyword_DropDown: [[ "dress","Categories","1" ]]
+  lst_SearchKeyword_DropDown: [[ "dress","Categories","2" ]]
   lst_APISearchingKeyword: ["dress","jegging","boots","Beauty"]
   lst_BackUpSearchingKeyword: ["furniture","rings","gym"]
   lst_ShoppingCartSearchKeyword: ["boots","dress"]
@@ -375,7 +375,7 @@ checkOut:
       province: "Ontario"
   lblBillingAddress: "Same as shipping address"
   lblExistingAddressErrorMessage: "The shipping address you are trying to add already exists."
-  lst_PromoteCode: ["OFFER034","SHIP150"]
+  lst_PromoteCode: ["OFFER034","OFFER030"]
   lst_GiftCard:
     - GiftCardNumber: "6006496682999900712"
       GiftCardPin: "9540"
