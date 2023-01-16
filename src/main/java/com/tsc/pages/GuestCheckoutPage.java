@@ -302,6 +302,9 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 			randomNumber = rand.nextInt(optionSize-2);
 		}
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddressLine1DropdownMenuList.get(randomNumber));
+		if (this.lstAddressLine1DropdownMenuList.get(randomNumber).getText().length() >= 30) {
+			randomNumber = 1;
+		}
 		this.getReusableActionsInstance().clickIfAvailable(this.lstAddressLine1DropdownMenuList.get(randomNumber));
 		this.waitForCondition(Driver->{return !this.cntAddressLine1DropdownMenuListContainer.getAttribute("class").contains("react-autosuggest__suggestions-container--open");},60000);
 		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());

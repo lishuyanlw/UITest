@@ -1,11 +1,11 @@
-#API USER TOKEN INFO
+# API USER TOKEN INFO
 apiUserSessionParams:
-  lbl_username: testDavid@test.com
-  lbl_password: testMail123
+  lbl_username: testautomation1@rogers.com
+  lbl_password: qa1234
   lbl_grantType: password
   lbl_apiKey: A9607F64-D061-4279-8D00-F8469EA38DD1
 
-#API APP TOKEN INFO
+# API APP TOKEN INFO
 apiAppSessionParams:
   lbl_username: A9607F64-D061-4279-8D00-F8469EA38DD1
   lbl_password: 3AED6BD0
@@ -13,7 +13,7 @@ apiAppSessionParams:
 
 contentfulApiParams:
   lbl_authorization: Basic 1321A95C-4BD0-4D29-AA55-B040D48C6992:5346C7F8
-  lbl_apiEndPoint: https://st-api.tsc.ca/configuration/v1/Web/
+  lbl_apiEndPoint: https://qa-api.tsc.ca/configuration/v1/Web/
 
 headerSection:
   lnk_NotFound: /pages/notfound
@@ -40,12 +40,12 @@ headerSection:
   lbl_SignInLandingPage: /pages/signin
   lbl_SearchBoxPlaceholder: Search
   lbl_ShoppingCartLinkName: Bag
-  lnk_ShoppingCartLink: /pages/shoppingcart
+  lnk_ShoppingCartLink: /pages/shoppingbag
   lst_HeaderNameAndLinksMap: {
     Today's Showstopper: ["Today's Showstopper","Today's Showstopper-FR","/pages/todaysshowstopper?ic=HP_TodaysShowstopper"],
     Watch TSC:  ["Watch TSC","Watch TSC-FR",""],
     Favourites: ["Favourites","","/pages/myaccount/favourites"]
-   }
+  }
   #Fourth parameter in list is true for those keys that have re-direct url present in application
   lst_WatchTSCNameAndLinksMap: {
     Watch Us Live: ["Watch Us Live","En direct","/pages/watchuslive?ic=HP_WatchUsLive","false"],
@@ -82,7 +82,7 @@ headerSection:
     lbl_LandingPageBrandShopAll: Shop By Brand
     lbl_FlyoutHeadingLandingPageLink: /pages/category?nav=n
   lbl_ParialURLEndWatchTSC: "&fm=top_header"
-   
+
 homePage:
   lbl_OnAirNow: ON AIR NOW
   lbl_RecentlyAir: RECENTLY AIRED
@@ -97,47 +97,51 @@ homePage:
   lbl_TopSellers: TOP SELLERS
 searchResultPage:
   lbl_prp_partial_url: "/pages/productresults?"
-  lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","Joan Rivers" ]
-  lst_SearchKeyword_Bugs: ["boots","desk  ","https://st-tsc.tsc.ca/pages/productresults?&searchterm=desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
-  lbl_ProductNumberToComparePRPAndPDPContent: "Brian Bailey 3/4 Sleeve Trumpet Hem Dress"
-  lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
-  lst_APISearchingKeyword: ["dress","jegging","boots"]
+  lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","Joan Rivers","100501" ]
+  #lst_SearchKeyword_Bugs: ["iPads & Tablets","desk  ","https://qa-tsc.tsc.ca/pages/productresults?&searchterm=desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
+  lst_SearchKeyword_Bugs: ["Gev Pall Sil Dauphin Apatite Ring Five Stone 9","desk  ","https://qa-tsc.tsc.ca/pages/productresults?&searchterm=desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
+  #lbl_ProductNumberToComparePRPAndPDPContent: "Brian Bailey Wedge Dress"
+  lbl_ProductNumberToComparePRPAndPDPContent: "Sofia B. 10K Gold Gemstone and Diamond Halo Heart Ring"
+  lst_SearchKeyword_DropDown: [[ "dress","Categories","2" ]]
+  lst_APISearchingKeyword: ["dress","jegging","boots","Beauty"]
+  lst_BackUpSearchingKeyword: ["furniture","rings","gym"]
+  lst_ShoppingCartSearchKeyword: ["boots","dress"]
   lbl_SearchResultPageDefaultSetting: 36
-  lst_SearchResultMessage:  [ "Showing results for" , "able to find any results" ] 
+  lst_SearchResultMessage:  [ "Showing results for" , "able to find any results" ]
   lst_SortOption: ["Featured Products","Newest First","Reviews: Highest First","Price: Lowest First","Price: Highest First","Brand Name: A to Z"]
-  lst_FilterOptionHeader: ["Category","Brand","Shop by brand","Shop by price label","Shop by colour","Size","Rollup size fashion","Shop by collection","Price","Reviews","Shop by more ways","Shop by clearance","New arrivals","Rollup size","Stone","Metal"]
+  lst_FilterOptionHeader: ["Category","Brand","Shop by brand","Shop by price label","Shop by colour","Size","Rollup size fashion","Shop by collection","Price","Reviews","Shop by more ways","Shop by clearance"]
   lst_Filter_Data: ["Price: Highest First","Price: Lowest First","Reviews: Highest First","Brand Name: A to Z"]
   lst_SortOptionMobile: ["Sort by : Featured Products","Sort by : Newest First","Sort by : Reviews: Highest First","Sort by : Price: Lowest First","Sort by : Price: Highest First","Sort by : Brand Name: A to Z"]
   lst_SearchOption:
     - filterType: Product
-      filterOption: 
-      - ["Shop by brand","Joan Rivers"]
-      - ["Shop by colour","Pink"]
+      filterOption:
+        - ["Shop by brand","Pink Tartan"]
+        - ["Shop by colour","Black"]
     - filterType: Price
       filterOption:
-        - ["Price","Under $50","Under"]
+        - ["Price","Under $100","Under"]
     - filterType: CombinatedAction
       filterOption:
-        - ["Shop by brand","Joan Rivers"]
-        - ["Reviews","3 Stars"]
-        - ["Price","Under $50"]
+        - ["Shop by brand","N Natori"]
+        - ["Reviews","4 Stars"]
+        - ["Price","Under $100"]
     - filterType: SequentialAction
-      filterOption: 
-        - ["Shop by brand","Joan Rivers"]
-        - ["Price","Under $50"]
-        - ["Shop by colour","Green"]
-    - filterType: FilterBugs
-      filterOption:  
-        - ["Shop by brand","Pajar"]
-        - ["Price","Under $100"] 
-    - filterType: CuratedCollectionsBugs
-      filterOption:  
-        - ["Jewellery","The Vault"]              
-    - filterType: BreadCrumbBugs
-      filterOption:  
-        - ["Shop by brand","Joan Rivers"]
-        - ["Price","Under $50"]
+      filterOption:
+        - ["Shop by brand","N Natori"]
+        - ["Price","Under $100"]
         - ["Shop by colour","Black"]
+    - filterType: FilterBugs
+      filterOption:
+        - ["Shop by brand","Pajar"]
+        - ["Shop by colour","Black"]
+    - filterType: CuratedCollectionsBugs
+      filterOption:
+        - ["Jewellery","The Vault"]
+    - filterType: BreadCrumbBugs
+      filterOption:
+        - ["Category","Pants & Shorts"]
+        - ["Price","Under $100"]
+        - ["Category","Leggings & Jeggings"]
     - filterType: PRPApiCallMultipleParameter
       filterOption:
         - ["page","2"]
@@ -154,20 +158,21 @@ searchResultPage:
   lbl_ProductRecommendationTitlePage: ["People who viewed this item also viewed","TOP SELLERS"]
   lbl_AddToBagPopupWindowTitle: "\\d+ ITEM(S)? ADDED TO YOUR SHOPPING BAG"
   lbl_VideoDisclaimInfo: "Pre-recorded videos contain pricing or promotional offers that may have expired."
-  lbl_AdvancedOrderkeyword: 219753
+  lbl_AdvancedOrderkeyword: 522809
+  lst_AdvancedOrderKeyword: ["522809","INDIGO","4"]
   lbl_AdvancedOrderMessage: "Est. Ship/Pick-up Date"
-  lbl_AutoDeliverykeyword: 593608
+  lbl_AutoDeliverykeyword: 603108
   lbl_productTrueFitAndSizingChart: 404791
-  lbl_ProductDeliveryOptions: 289485
+  lbl_ProductDeliveryOptions: 603108
   lbl_SoldOutkeyword: 485939
   lbl_QuantityNumberToShowLeftItemInfo: 10
   lst_WriteReviewSubmitMessage: ["THANK YOU!","We will process your review and publish it within 3-7 business days."]
   lbl_TellYourFriendsSentMessage: "Your message has been sent!"
-  lbl_ProductNumberWithBandAndReviewAndSeeMore: 402783
-  lst_ClearanceKeyword: ["Clearance","Home & Garden","Collectibles"]
-footerSection: 
+  lbl_ProductNumberWithBandAndReviewAndSeeMore: 402173 #525780-This is product no for review with image
+  lst_ClearanceKeyword: ["Clearance","Jewellery","Rings"]
+footerSection:
   lst_SocialMediaLinks: ["https://www.facebook.com/Shoptsc","https://twitter.com/shoptsc","https://instagram.com/shoptsc","www.youtube.com","https://www.pinterest.ca/shoptsc"]
-  lst_NameAndLinks: 
+  lst_NameAndLinks:
     - ["Credit Card","Cartes-cadeaux","/pages/creditcard?ic=ftr_tsccreditcard","",""]
     - ["Gift Card","Inscrivez-vous maintenant","/pages/giftcard?ic=ftr_tscgiftcard-img","",""]
     - ["Send us feedback","Dites-nous ce que vous pensez","https://rogers.qualtrics.com/","",""]
@@ -176,6 +181,7 @@ footerSection:
     - ["Customer Service","Service à la clientèle","/pages/customer-service","","TSC CUSTOMER HUB - ESPACE CLIENT TSC"]
     - ["My Account","Mon compte","pages/customer-service/setting-up-an-account","","TSC CUSTOMER HUB - ESPACE CLIENT TSC"]
     - ["Track Your Order","Suivre une commande","/pages/trackorder","","TSC CUSTOMER HUB - ESPACE CLIENT TSC"]
+    - ["Sign Up For Email","Inscrivez-vous pour recevoir les courriels","/go/email/signup","","TSC CUSTOMER HUB - ESPACE CLIENT TSC"]
     - ["Contact Us","Contactez-Nous","/pages/customer-service/contact-info","","TSC CUSTOMER HUB - ESPACE CLIENT TSC"]
     - ["Blog","Blog","https://blog.tsc.ca","","TSC CUSTOMER HUB - ESPACE CLIENT TSC"]
     - ["ABOUT TSC","À PROPOS DE TSC","",""]
@@ -187,6 +193,7 @@ footerSection:
     - ["Channel Finder","Guide des chaînes","/pages/channelfinder","","ABOUT TSC - À PROPOS DE TSC"]
     - ["Meet the Hosts","Nos animateurs","/pages/hosts","","ABOUT TSC - À PROPOS DE TSC"]
     - ["Rogers Media - Proudly Canadian","Rogers Media - entreprise fièrement canadienne","",""]
+    - ["Rogers Sports & Media - Proudly Canadian","Rogers Sports & Média - Entreprise fièrement Canadienne",""]
     - ["All prices in Canadian dollars - TSC.ca","Tous les prix sont en dollars canadiens - TSC.ca","",""]
   lst_MyAccountObjectSectionTitle: ["SETTING UP AN ACCOUNT","PHONE BASED ACCOUNTS","PASSWORD RECOVERY"]
   lst_TrackYourOrderObjectSectionTitle: ["ORDER NUMBER","BILLING POSTAL CODE","SUBMIT"]
@@ -201,7 +208,35 @@ loginUser:
   lbl_ErrorMessageForUserName: A valid email is required!
   lbl_ErrorMessageForPassword: Password is required!
   lbl_ErrorMessageForUserNameAndPassword: Hm, this email and password combination does not match our records. Please double check and try again.
+  lstErrorMessageForCreateAccount: ["You have one or more missing or invalid entries. Please enter correct data and try again.",
+                                    "Numbers and special characters are not allowed.",
+                                    "Numbers and special characters are not allowed.",
+                                    "Please enter valid postal code",
+                                    "Please enter your email address in the format john@example.com",
+                                    "The passwords you've entered do not match. Please try again."]
+  lblErrorMessageForExistingEmail: "Email <email> already exist!!!"
+  lnkSignInPage: "/pages/signin"
+  lstErrorMessageForTransferPhoneAccount: [ "Please enter 10 digit Number.",
+                                            "Please enter your 10 digit phone number, including your area code",
+                                            "Please enter your email address in the format john@example.com",
+                                            "The passwords you've entered do not match. Please try again.",
+                                            "You have one or more missing or invalid entries. Please enter correct data and try again." ]
+  lnkForgotPasswordPage: "/pages/passwordrequest"
+  lnkCreateAccountPage: "/pages/createaccount"
+  lnkTransferPhoneAccountPage: "/pages/createphoneaccount"
+  lblErrorMessageForBlankEmailCheckingForForgotPassword: "Email is required."
+  lblErrorMessageForInvalidEmailFormatCheckingForForgotPassword: "Please enter your email address in the format john@example.com"
+  lstErrorMessageForAnswerSecurityQuestionsForForgotPassword: ["You have one or more missing or invalid entries. Please enter correct data and try again.",
+                                                               "Phone number is required.",
+                                                               "Postal code is required.",
+                                                               "Security question answer is required."]
+  lblErrorMessageForInvalidSecurityQuestionAnswerForForgotPassword: "Your answers could not be validated."
+  lstErrorMessageForResetPasswordForForgotPassword: [ "Password is required.",
+                                                      "Please type your password again."]
+  lblErrorMessageForPasswordsNotMatchForForgotPassword: "The passwords you've entered do not match. Please try again."
+
 myAccount:
+  lnk_myAccountURL: "/pages/myaccount"
   lnk_addNewCardURL: "/pages/myaccount/paymentcards/addcard"
   lnk_giftCardURL: "/pages/giftcard"
   lst_newCreditCardType: [visa,master,amex,tsc]
@@ -238,36 +273,129 @@ myAccount:
   lbl_myNewsLettersTitle: "MY NEWSLETTERS"
   lnk_myAccountNewsLetterURL: "/pages/myaccount/newsletter"
   lbl_myNewsLettersSubscriptionSuccessMessage: "Your subscription settings have now been updated."
-  lbl_myNewsLettersUnSubscriptionSuccessMessage: "You have now been successfully unsubscribed."
-  lbl_myNewsLettersNoCheckUnSubscriptionAlertMessage: "You have not chosen the unsubscribe checkbox."
-  lbl_myNewsLettersCheckUnSubscriptionAlertMessage: "Are you sure you want to completely unsubscribe from all of our exciting email marketing communications?"
+  lbl_myNewsLettersUpdateErrorMessage: "Please select any of the above checkboxes to update your newsletter preferences"
+  lbl_myNewsLettersUpdateAlertMessage: "Please click on UPDATE PREFERENCES button to update your newsletter preferences"
+  lbl_myNewsLettersUnSubscribeErrorMessage: "Select the checkbox to unsubscribe from email"
+  lbl_myNewsLettersUnSubscribeAlertMessage: "Please click on the UNSUBSCRIBE button to unsubscribe from all email"
   lbl_noOrderRecordsMessage: "No orders yet. TSC has tons of deals to offer"
+  lblOrderDetailsPageUrl: "/pages/myaccount/orderstatus/details?orderNo="
+  lblBreadCrumbNavigationPages: "My Account:Your Orders:Order Details"
+  lstTrackingOrderPortalErrorMessageForOrderNumberAndPostalCode: ["Valid order number is required.","Postal code is required."]
+  lstTrackingOrderPortalErrorMessageForSignIn: ["You have one or more missing or invalid entries. Please enter correct data and try again.",
+                                                "Valid email address is required.",
+                                                "Password is required."]
+  lblErrorMessageWithInvalidUserNameAndPasswordForOrderTrackingPortal: "This email and password combination does not match our records. Please double check and try again."
+  lblTrackingOrderPortalNotFoundMessage: "We are sorry! The page you are trying to reach cannot be found."
 
-  lstTestName: [ "MA_TC10_Payment_Options_Manage_Credit_Card",
-                 "PD_TC",
-                 "SC_TC" ]
-  lblChromeBrowserVersion: "99"
-  shoppingCart:
-    lst_SearchKeywords:
-      - searchKeyword: "jeggings"
-        quantity: "more than 3"
-        badgeRequired: "true"
-        itemToBeAdded: "2"
-        styleExist: "true"
-        sameSizeAndStyle: "true"
-      - searchKeyword: "dress"
-        quantity: "more than 3"
-        badgeRequired: "true"
-        itemToBeAdded: "2"
-        styleExist: "true"
-        sameSizeAndStyle: "false"
-      - searchKeyword: "gym"
-        quantity: ""
-        badgeRequired: "false"
-        itemToBeAdded: "1"
-        styleExist: "false"
-        sameStyleAndSize: "false"
-    lblOrderExceedingQuantityMessage: "The size of your order exceeds our on-line shopping limits but one of our Customer Service agents will be happy to assist you with your purchase. Please call our Customer Care Centre at 1-888-2020-888 to complete your order."
-    lblProductNumberForOrderExceedingQuantity: 713070
-    lblCartExceedingLimitMessage: "The size of your order exceeds our on-line shopping limits but one of our Customer Service agents will be happy to assist you with your purchase. Please call our Customer Care Centre at 1-888-2020-888 to complete your order."
-    lblJayCareFoundationDonationMessage: "Jays Care Foundation Donation"
+lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card",
+              "MA_TC18_MyPreferences_MyNewsletters",
+              "PD_TC"]
+lblChromeBrowserVersion: "99"
+shoppingCart:
+  lst_SearchKeywords:
+    - searchKeyword: "boots"
+      quantity: "more than 1"
+      badgeRequired: "false"
+      itemToBeAdded: "1"
+      styleExist: "true"
+      sameSizeAndStyle: "true"
+    - searchKeyword: "pants"
+      quantity: "more than 3"
+      badgeRequired: "false"
+      itemToBeAdded: "1"
+      styleExist: "true"
+      sameSizeAndStyle: "true"
+    - searchKeyword: "gym"
+      quantity: ""
+      badgeRequired: "false"
+      itemToBeAdded: "1"
+      styleExist: "false"
+    - searchKeyword: "legging"
+      quantity: "more than 1"
+      badgeRequired: "true"
+      itemToBeAdded: "1"
+      styleExist: "true"
+      sameSizeAndStyle: "true"
+  lblOrderExceedingQuantityMessage: "The size of your order exceeds our on-line shopping limits but one of our Customer Service agents will be happy to assist you with your purchase. Please call our Customer Care Centre at 1-888-2020-888 to complete your order."
+  lblProductNumberForOrderExceedingQuantity: 713070
+  lblCartExceedingLimitMessage: "The size of your order exceeds our on-line shopping limits but one of our Customer Service agents will be happy to assist you with your purchase. Please call our Customer Care Centre at 1-888-2020-888 to complete your order."
+  lblJayCareFoundationDonationMessage: "Jays Care Foundation Donation"
+checkOut:
+  lst_SearchKeywords:
+    - searchKeyword: "jean"
+      quantity: "more than 1"
+      badgeRequired: "false"
+      itemToBeAdded: "1"
+      styleExist: "true"
+      sameSizeAndStyle: "true"
+    - searchKeyword: "pants"
+      quantity: "more than 3"
+      badgeRequired: "false"
+      itemToBeAdded: "2"
+      styleExist: "true"
+      sameSizeAndStyle: "true"
+    - searchKeyword: "gym"
+      quantity: ""
+      badgeRequired: "false"
+      itemToBeAdded: "1"
+      styleExist: "false"
+      sameSizeAndStyle: "true"
+  lstOrderDetailItems:
+    - searchKeyword: "jeggings"
+      quantity: "more than 1"
+      badgeRequired: "false"
+      itemToBeAdded: "1"
+      styleExist: "true"
+      sameSizeAndStyle: "true"
+    - searchKeyword: "joan rivers"
+      quantity: "more than 1"
+      badgeRequired: "true"
+      itemToBeAdded: "1"
+      styleExist: "true"
+      sameSizeAndStyle: "true"
+  lst_SearchingKeywordForPlaceOrder: ["jeggings","joan rivers","Beauty"]
+  addShippingAddressErrorMessage: ["You have one or more missing or invalid entries. Please enter correct data and try again.",
+                                   "First name is required.","Last name is required.","Phone number is required.","Address is required.",
+                                   "City is required.","Province is required.","Postal code is required."]
+  lblProductNumberWithMultipleShippingMethods: 536115
+  newShippingAddressForUser:
+    - firstName: "Checkout First"
+      lastName: "Checkout Last"
+      phoneNumber: "6474567890"
+      address: "50-1280 Main St W"
+      city: "Hamilton"
+      postalCode: "L8S4S5"
+      province: "Ontario"
+    - firstName: "First Checkout"
+      lastName: "Last Checkout"
+      phoneNumber: "6474567890"
+      address: "12-530 Oxford St W"
+      city: "London"
+      postalCode: "N6H1T6"
+      province: "Ontario"
+  lblBillingAddress: "Same as shipping address"
+  lblExistingAddressErrorMessage: "The shipping address you are trying to add already exists."
+  lst_PromoteCode: ["OFFER034","OFFER030"]
+  lst_GiftCard:
+    - GiftCardNumber: "6006496682999900712"
+      GiftCardPin: "9540"
+    - GiftCardNumber: "6006496682999900720"
+      GiftCardPin: "2714"
+  lblGiftCardPromoteErrorMessageForEasyPayment: "Gift cards cannot be used for orders that have Easy Pays."
+  lblPaymentMethodErrorMessage: "Please enter a payment method"
+  lstPaymentMethodCardAdditionErrorMessage: [
+    ["The credit card number entered is not valid.  Please try again."],
+    ["The credit card number you entered is not valid. Please try again."],
+    ["The credit card selected has expired."]
+  ]
+  lblInvalidCreditCardNumber: 4012888812371888
+  lblPromoteCodeAppliedMessage: "Applied to eligible items"
+  lblGiftCardAppliedMessage: "applied to your order today!"
+  lstInvalidPromoteCodeAndErrorMessage: ["SHIP99999","The promotional code <promoteCode> you entered is not valid."]
+  lstInvalidGiftCardAndErrorMessage: ["6006499999999999999","9999","The System could not validate the Gift Card. Please try again."]
+  lblEmptyGiftCardPinErrorMessage: "PIN is required."
+  lstShippingAddressErrorMessageForGuestCheckout: [ "You have one or more missing or invalid entries. Please enter correct data and try again.",
+                                                    "First name is required.","Last name is required.","Phone number is required.","Address is required.",
+                                                    "City is required.","Postal code is required.","Valid email is required.","Password is required." ]
+
+#https://qa-tsc.tsc.ca/pages/myaccount/orderstatus/details?orderNo=Z4057821
