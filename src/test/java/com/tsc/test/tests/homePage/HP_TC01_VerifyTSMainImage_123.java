@@ -2,12 +2,14 @@ package com.tsc.test.tests.homePage;
 
 import java.util.List;
 import java.util.Set;
+
+import org.testng.ITest;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class HP_TC01_VerifyTSMainImage extends BaseTest{
+public class HP_TC01_VerifyTSMainImage_123 extends BaseTest  implements ITest {
 	@Test(groups={"Home","Regression"})
 	public void HP_TC01_VerifyTSMainImage() throws InterruptedException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
@@ -74,5 +76,10 @@ public class HP_TC01_VerifyTSMainImage extends BaseTest{
 				}
 		}
 		*/
+	}
+
+	@Override
+	public String getTestName() {
+		return "David Test";
 	}
 }
